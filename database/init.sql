@@ -16,13 +16,11 @@ USE portfolio_db;
 CREATE TABLE users (
 id INT AUTO_INCREMENT PRIMARY KEY,
 
-```
 login VARCHAR(100) NOT NULL UNIQUE,
 
 password VARCHAR(255) NOT NULL,
 
 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-```
 
 );
 
@@ -33,7 +31,6 @@ created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 CREATE TABLE projects (
 id INT AUTO_INCREMENT PRIMARY KEY,
 
-```
 title VARCHAR(255) NOT NULL,
 
 slug VARCHAR(255) NOT NULL UNIQUE,
@@ -74,7 +71,6 @@ created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
 updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     ON UPDATE CURRENT_TIMESTAMP
-```
 
 );
 
@@ -85,7 +81,6 @@ updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 CREATE TABLE technologies (
 id INT AUTO_INCREMENT PRIMARY KEY,
 
-```
 name VARCHAR(100) NOT NULL UNIQUE
 
 icon_url VARCHAR(255),
@@ -99,7 +94,6 @@ category ENUM(
 ) NOT NULL,
 
 is_featured BOOLEAN NOT NULL DEFAULT FALSE
-```
 
 );
 
@@ -110,7 +104,6 @@ is_featured BOOLEAN NOT NULL DEFAULT FALSE
 CREATE TABLE project_technologies (
 project_id INT NOT NULL,
 
-```
 technology_id INT NOT NULL,
 
 PRIMARY KEY (
@@ -127,7 +120,6 @@ CONSTRAINT fk_project_technologies_technology
     FOREIGN KEY (technology_id)
     REFERENCES technologies(id)
     ON DELETE CASCADE
-```
 
 );
 
@@ -138,7 +130,6 @@ CONSTRAINT fk_project_technologies_technology
 CREATE TABLE project_images (
 id INT AUTO_INCREMENT PRIMARY KEY,
 
-```
 project_id INT NOT NULL,
 
 image_url VARCHAR(255) NOT NULL,
@@ -149,7 +140,6 @@ CONSTRAINT fk_project_images_project
     FOREIGN KEY (project_id)
     REFERENCES projects(id)
     ON DELETE CASCADE
-```
 
 );
 
