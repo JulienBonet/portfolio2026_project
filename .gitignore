@@ -19,3 +19,6 @@ server/dist/
 .DS_Store
 
 coverage
+
+ARCHITECTURE.md
+
