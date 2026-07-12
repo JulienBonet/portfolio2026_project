@@ -1,11 +1,25 @@
-import { Router } from "express";
+import { Router } from 'express';
 
-import { getAllPublishedProjects, getProjectById } from "../controllers/projectController.js";
+import { adminAuthMiddleware } from '../middleware/adminAuthMiddleware.js';
+
+import {
+  getAllPublishedProjects,
+  getProjectById,
+  createProjectController,
+  updateProjectController,
+  deleteProjectController,
+} from '../controllers/projectController.js';
 
 const router = Router();
 
-router.get("/", getAllPublishedProjects);
+// public
 
-router.get("/:id", getProjectById);
+router.get('/', getAllPublishedProjects);
+router.get('/:id', getProjectById);
+
+// admin
+router.post('/', adminAuthMiddleware, createProjectController);
+router.put('/:id', adminAuthMiddleware, updateProjectController);
+router.delete('/:id', adminAuthMiddleware, deleteProjectController);
 
 export default router;

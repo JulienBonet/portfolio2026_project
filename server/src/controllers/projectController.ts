@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 
-import { findAllPublishedProjects} from '../models/projectModel.js';
+import { createProject, deleteProject, findAllPublishedProjects, updateProject} from '../models/projectModel.js';
 
 import { getProjectDetails } from '../services/projectService.js';
 
@@ -42,6 +42,90 @@ export async function getProjectById(req: Request, res: Response) {
 
     res.status(500).json({
       message: 'Failed to fetch project',
+    });
+  }
+}
+
+export async function createProjectController(
+  req: Request,
+  res: Response,
+) {
+  try {
+
+    const result = await createProject(req.body);
+
+    res.status(201).json({
+      message: "Project created",
+      result,
+    });
+
+  } catch(error) {
+
+    console.error(error);
+
+    res.status(500).json({
+      message: "Failed to create project",
+    });
+  }
+}
+
+export async function updateProjectController(
+  req: Request,
+  res: Response,
+) {
+  try {
+    const id = Number(req.params.id);
+
+    if (Number.isNaN(id)) {
+      return res.status(400).json({
+        message: "Invalid project id",
+      });
+    }
+
+    const result = await updateProject(
+      id,
+      req.body,
+    );
+
+    res.json({
+      message: "Project updated",
+      result,
+    });
+
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      message: "Failed to update project",
+    });
+  }
+}
+
+export async function deleteProjectController(
+  req: Request,
+  res: Response,
+) {
+  try {
+    const id = Number(req.params.id);
+
+    if (Number.isNaN(id)) {
+      return res.status(400).json({
+        message: "Invalid project id",
+      });
+    }
+
+    const result = await deleteProject(id);
+
+    res.json({
+      message: "Project deleted",
+      result,
+    });
+
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      message: "Failed to delete project",
     });
   }
 }
