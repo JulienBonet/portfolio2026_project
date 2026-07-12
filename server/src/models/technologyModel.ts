@@ -74,6 +74,30 @@ export async function findTechnologyById(
   return technologies[0] ?? null;
 }
 
+export async function findTechnologiesByProjectId(
+  projectId: number,
+): Promise<Technology[]> {
+
+  const [rows] = await db.query(
+    `
+      SELECT
+        t.id,
+        t.name,
+        t.icon_url,
+        t.category,
+        t.is_featured
+      FROM technologies t
+      INNER JOIN project_technologies pt
+        ON pt.technology_id = t.id
+      WHERE pt.project_id = ?
+      ORDER BY t.name ASC
+    `,
+    [projectId],
+  );
+
+  return rows as Technology[];
+}
+
 
 export async function createTechnology(
   name: string,
