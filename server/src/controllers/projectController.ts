@@ -3,6 +3,7 @@ import { Request, Response } from 'express';
 import { createProject, deleteProject, findAllPublishedProjects, updateProject} from '../models/projectModel.js';
 
 import { getProjectDetails } from '../services/projectService.js';
+import { replaceProjectTechnologies } from '../models/projectTechnologyModel.js';
 
 export async function getAllPublishedProjects(_req: Request, res: Response) {
   try {
@@ -126,6 +127,42 @@ export async function deleteProjectController(
 
     res.status(500).json({
       message: "Failed to delete project",
+    });
+  }
+}
+
+export async function updateProjectTechnologies(
+  req: Request,
+  res: Response,
+) {
+  try {
+    const projectId = Number(req.params.id);
+
+    const { technologyIds } = req.body;
+
+    if (
+      Number.isNaN(projectId) ||
+      !Array.isArray(technologyIds)
+    ) {
+      return res.status(400).json({
+        message: "Invalid data",
+      });
+    }
+
+    await replaceProjectTechnologies(
+      projectId,
+      technologyIds,
+    );
+
+    res.json({
+      message: "Project technologies updated",
+    });
+
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      message: "Failed to update project technologies",
     });
   }
 }

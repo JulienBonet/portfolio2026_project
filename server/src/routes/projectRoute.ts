@@ -8,6 +8,7 @@ import {
   createProjectController,
   updateProjectController,
   deleteProjectController,
+  updateProjectTechnologies,
 } from '../controllers/projectController.js';
 
 const router = Router();
@@ -21,5 +22,6 @@ router.get('/:id', getProjectById);
 router.post('/', adminAuthMiddleware, createProjectController);
 router.put('/:id', adminAuthMiddleware, updateProjectController);
 router.delete('/:id', adminAuthMiddleware, deleteProjectController);
+router.put('/:id/technologies', adminAuthMiddleware, updateProjectTechnologies);
 
 export default router;
