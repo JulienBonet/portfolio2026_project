@@ -27,3 +27,61 @@ export async function findImagesByProjectId(
 
   return rows as ProjectImage[];
 }
+
+export async function createProjectImage(
+  projectId: number,
+  image_url: string,
+  position: number,
+) {
+  const [result] = await db.query(
+    `
+      INSERT INTO project_images (
+        project_id,
+        image_url,
+        position
+      )
+      VALUES (?, ?, ?)
+    `,
+    [
+      projectId,
+      image_url,
+      position,
+    ],
+  );
+
+  return result;
+}
+
+export async function updateProjectImagePosition(
+  imageId: number,
+  position: number,
+) {
+  const [result] = await db.query(
+    `
+      UPDATE project_images
+      SET position = ?
+      WHERE id = ?
+    `,
+    [
+      position,
+      imageId,
+    ],
+  );
+
+  return result;
+}
+
+export async function deleteProjectImage(
+  imageId: number,
+) {
+  const [result] = await db.query(
+    `
+      DELETE FROM project_images
+      WHERE id = ?
+    `,
+    [imageId],
+  );
+
+  return result;
+}
+
