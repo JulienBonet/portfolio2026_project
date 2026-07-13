@@ -7,6 +7,9 @@ import {
   deleteProjectImage,
 } from "../models/projectImageModel.js";
 
+import { uploadImageBuffer } from "../services/cloudinaryService.js";
+import { findProjectById } from "../models/projectModel.js";
+
 export async function getProjectImages(
   req: Request,
   res: Response,
@@ -72,6 +75,56 @@ export async function createProjectImageController(
 
     res.status(500).json({
       message: "Failed to create image",
+    });
+  }
+}
+
+export async function uploadProjectImageController(
+  req: Request,
+  res: Response,
+) {
+  try {
+    const projectId = Number(req.params.id);
+
+    if (
+      Number.isNaN(projectId) ||
+      !req.file
+    ) {
+      return res.status(400).json({
+        message: "Invalid data",
+      });
+    }
+
+    const project = await findProjectById(projectId);
+
+    if (!project) {
+      return res.status(404).json({
+        message: "Project not found",
+      });
+    }
+
+    const imageUrl = await uploadImageBuffer(
+      req.file.buffer,
+      `portfolio/projects/${project.slug}`,
+    );
+
+    const result = await createProjectImage(
+      projectId,
+      imageUrl,
+      0,
+    );
+
+    res.status(201).json({
+      message: "Image uploaded",
+      image_url: imageUrl,
+      result,
+    });
+
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      message: "Failed to upload image",
     });
   }
 }
@@ -148,3 +201,4 @@ export async function deleteProjectImageController(
     });
   }
 }
+
