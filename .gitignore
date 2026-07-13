@@ -23,3 +23,5 @@ coverage
 ARCHITECTURE.md
 server/hashPassword.js
 server/image_test_02.jpg
+server/image_test_03.jpg
+server/image_test_04.jpg

@@ -1,39 +1,37 @@
-import { Request, Response } from "express";
+import { Request, Response } from 'express';
 
 import {
   findImagesByProjectId,
   createProjectImage,
   updateProjectImagePosition,
   deleteProjectImage,
-} from "../models/projectImageModel.js";
+  findProjectImageById,
+  getNextImagePosition,
+  reorderPositionsAfterDelete,
+  moveProjectImage,
+} from '../models/projectImageModel.js';
 
-import { uploadImageBuffer } from "../services/cloudinaryService.js";
-import { findProjectById } from "../models/projectModel.js";
+import { deleteImageFromCloudinary, uploadImageBuffer } from '../services/cloudinaryService.js';
+import { findProjectById } from '../models/projectModel.js';
 
-export async function getProjectImages(
-  req: Request,
-  res: Response,
-) {
+export async function getProjectImages(req: Request, res: Response) {
   try {
     const projectId = Number(req.params.id);
 
     if (Number.isNaN(projectId)) {
       return res.status(400).json({
-        message: "Invalid project id",
+        message: 'Invalid project id',
       });
     }
 
-    const images = await findImagesByProjectId(
-      projectId,
-    );
+    const images = await findImagesByProjectId(projectId);
 
     res.json(images);
-
   } catch (error) {
     console.error(error);
 
     res.status(500).json({
-      message: "Failed to fetch images",
+      message: 'Failed to fetch images',
     });
   }
 }
@@ -45,10 +43,7 @@ export async function createProjectImageController(
   try {
     const projectId = Number(req.params.id);
 
-    const {
-      image_url,
-      position,
-    } = req.body;
+    const { image_url } = req.body;
 
     if (
       Number.isNaN(projectId) ||
@@ -59,11 +54,17 @@ export async function createProjectImageController(
       });
     }
 
-    const result = await createProjectImage(
-      projectId,
-      image_url,
-      position ?? 0,
-    );
+    const position =
+      await getNextImagePosition(
+        projectId,
+      );
+
+    const result =
+      await createProjectImage(
+        projectId,
+        image_url,
+        position,
+      );
 
     res.status(201).json({
       message: "Image created",
@@ -84,7 +85,9 @@ export async function uploadProjectImageController(
   res: Response,
 ) {
   try {
-    const projectId = Number(req.params.id);
+    const projectId = Number(
+      req.params.id,
+    );
 
     if (
       Number.isNaN(projectId) ||
@@ -95,7 +98,10 @@ export async function uploadProjectImageController(
       });
     }
 
-    const project = await findProjectById(projectId);
+    const project =
+      await findProjectById(
+        projectId,
+      );
 
     if (!project) {
       return res.status(404).json({
@@ -103,16 +109,23 @@ export async function uploadProjectImageController(
       });
     }
 
-    const imageUrl = await uploadImageBuffer(
-      req.file.buffer,
-      `portfolio/projects/${project.slug}`,
-    );
+    const imageUrl =
+      await uploadImageBuffer(
+        req.file.buffer,
+        `portfolio/projects/${project.slug}`,
+      );
 
-    const result = await createProjectImage(
-      projectId,
-      imageUrl,
-      0,
-    );
+    const position =
+      await getNextImagePosition(
+        projectId,
+      );
+
+    const result =
+      await createProjectImage(
+        projectId,
+        imageUrl,
+        position,
+      );
 
     res.status(201).json({
       message: "Image uploaded",
@@ -142,22 +155,46 @@ export async function updateProjectImageController(
 
     if (
       Number.isNaN(imageId) ||
-      typeof position !== "number"
+      typeof position !== "number" ||
+      position < 0
     ) {
       return res.status(400).json({
         message: "Invalid data",
       });
     }
 
-    const result =
-      await updateProjectImagePosition(
+    const image =
+      await findProjectImageById(
         imageId,
-        position,
       );
+
+    if (!image) {
+      return res.status(404).json({
+        message: "Image not found",
+      });
+    }
+
+    const images =
+      await findImagesByProjectId(
+        image.project_id,
+      );
+
+    const maxPosition =
+      images.length - 1;
+
+    const targetPosition =
+      Math.min(
+        position,
+        maxPosition,
+      );
+
+    await moveProjectImage(
+      imageId,
+      targetPosition,
+    );
 
     res.json({
       message: "Image updated",
-      result,
     });
 
   } catch (error) {
@@ -184,8 +221,29 @@ export async function deleteProjectImageController(
       });
     }
 
-    const result = await deleteProjectImage(
-      imageId,
+    const image =
+      await findProjectImageById(
+        imageId,
+      );
+
+    if (!image) {
+      return res.status(404).json({
+        message: "Image not found",
+      });
+    }
+
+    await deleteImageFromCloudinary(
+      image.image_url,
+    );
+
+    const result =
+      await deleteProjectImage(
+        imageId,
+      );
+
+    await reorderPositionsAfterDelete(
+      image.project_id,
+      image.position,
     );
 
     res.json({
@@ -201,4 +259,3 @@ export async function deleteProjectImageController(
     });
   }
 }
-

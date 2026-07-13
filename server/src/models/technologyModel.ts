@@ -5,7 +5,8 @@ export type TechnologyCategory =
   | "backend"
   | "database"
   | "devops"
-  | "tool";
+  | "tool"
+  | "cms";
 
 export interface Technology {
   id: number;

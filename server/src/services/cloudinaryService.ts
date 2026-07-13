@@ -22,3 +22,23 @@ export function uploadImageBuffer(
     stream.end(buffer);
   });
 }
+
+export async function deleteImageFromCloudinary(
+  imageUrl: string,
+) {
+  const parts = imageUrl.split("/upload/");
+
+  if (parts.length !== 2) {
+    throw new Error("Invalid Cloudinary URL");
+  }
+
+  const publicIdWithExtension = parts[1]
+    .replace(/^v\d+\//, "");
+
+  const publicId = publicIdWithExtension
+    .replace(/\.[^/.]+$/, "");
+
+  return cloudinary.uploader.destroy(
+    publicId,
+  );
+}
