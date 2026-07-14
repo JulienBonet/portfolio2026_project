@@ -1,9 +1,28 @@
 import { Request, Response } from 'express';
 
-import { createProject, deleteProject, findAllPublishedProjects, updateProject} from '../models/projectModel.js';
+import {
+  createProject,
+  deleteProject,
+  findAllProjects,
+  findAllPublishedProjects,
+  findProjectById,
+  updateProject,
+  updateProjectCoverImage,
+} from '../models/projectModel.js';
 
-import { getProjectDetails } from '../services/projectService.js';
+import {
+  uploadImageBuffer,
+} from '../services/cloudinaryService.js';
+
+import { getPublishedProjectDetails, getAdminProjectDetails } from '../services/projectService.js';
+
 import { replaceProjectTechnologies } from '../models/projectTechnologyModel.js';
+
+import { findImagesByProjectId }
+  from "../models/projectImageModel.js";
+
+import { deleteImageFromCloudinary }
+  from "../services/cloudinaryService.js";
 
 export async function getAllPublishedProjects(_req: Request, res: Response) {
   try {
@@ -19,7 +38,7 @@ export async function getAllPublishedProjects(_req: Request, res: Response) {
   }
 }
 
-export async function getProjectById(req: Request, res: Response) {
+export async function getPublishedProjectById(req: Request, res: Response) {
   try {
     const id = Number(req.params.id);
 
@@ -29,7 +48,7 @@ export async function getProjectById(req: Request, res: Response) {
       });
     }
 
-    const project = await getProjectDetails(id);
+    const project = await getPublishedProjectDetails(id);
 
     if (!project) {
       return res.status(404).json({
@@ -47,57 +66,86 @@ export async function getProjectById(req: Request, res: Response) {
   }
 }
 
-export async function createProjectController(
-  req: Request,
-  res: Response,
-) {
+export async function getAllProjectsAdmin(_req: Request, res: Response) {
   try {
+    const projects = await findAllProjects();
 
-    const result = await createProject(req.body);
-
-    res.status(201).json({
-      message: "Project created",
-      result,
-    });
-
-  } catch(error) {
-
+    res.json(projects);
+  } catch (error) {
     console.error(error);
 
     res.status(500).json({
-      message: "Failed to create project",
+      message: 'Failed to fetch projects',
     });
   }
 }
 
-export async function updateProjectController(
-  req: Request,
-  res: Response,
-) {
+export async function getProjectAdminById(req: Request, res: Response) {
   try {
     const id = Number(req.params.id);
 
     if (Number.isNaN(id)) {
       return res.status(400).json({
-        message: "Invalid project id",
+        message: 'Invalid project id',
       });
     }
 
-    const result = await updateProject(
-      id,
-      req.body,
-    );
+    const project = await getAdminProjectDetails(id);
 
-    res.json({
-      message: "Project updated",
-      result,
-    });
+    if (!project) {
+      return res.status(404).json({
+        message: 'Project not found',
+      });
+    }
 
+    res.json(project);
   } catch (error) {
     console.error(error);
 
     res.status(500).json({
-      message: "Failed to update project",
+      message: 'Failed to fetch project',
+    });
+  }
+}
+
+export async function createProjectController(req: Request, res: Response) {
+  try {
+    const result = await createProject(req.body);
+
+    res.status(201).json({
+      message: 'Project created',
+      result,
+    });
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      message: 'Failed to create project',
+    });
+  }
+}
+
+export async function updateProjectController(req: Request, res: Response) {
+  try {
+    const id = Number(req.params.id);
+
+    if (Number.isNaN(id)) {
+      return res.status(400).json({
+        message: 'Invalid project id',
+      });
+    }
+
+    const result = await updateProject(id, req.body);
+
+    res.json({
+      message: 'Project updated',
+      result,
+    });
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      message: 'Failed to update project',
     });
   }
 }
@@ -115,11 +163,32 @@ export async function deleteProjectController(
       });
     }
 
-    const result = await deleteProject(id);
+    const project = await findProjectById(id);
+
+    if (!project) {
+      return res.status(404).json({
+        message: "Project not found",
+      });
+    }
+
+    if (project.cover_image_url) {
+      await deleteImageFromCloudinary(
+        project.cover_image_url,
+      );
+    }
+
+    const images = await findImagesByProjectId(id);
+
+    for (const image of images) {
+      await deleteImageFromCloudinary(
+        image.image_url,
+      );
+    }
+
+    await deleteProject(id);
 
     res.json({
       message: "Project deleted",
-      result,
     });
 
   } catch (error) {
@@ -131,38 +200,93 @@ export async function deleteProjectController(
   }
 }
 
-export async function updateProjectTechnologies(
+export async function updateProjectTechnologies(req: Request, res: Response) {
+  try {
+    const projectId = Number(req.params.id);
+
+    const { technologyIds } = req.body;
+
+    if (Number.isNaN(projectId) || !Array.isArray(technologyIds)) {
+      return res.status(400).json({
+        message: 'Invalid data',
+      });
+    }
+
+    await replaceProjectTechnologies(projectId, technologyIds);
+
+    res.json({
+      message: 'Project technologies updated',
+    });
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      message: 'Failed to update project technologies',
+    });
+  }
+}
+
+export async function uploadProjectCoverController(
   req: Request,
   res: Response,
 ) {
   try {
     const projectId = Number(req.params.id);
 
-    const { technologyIds } = req.body;
-
     if (
       Number.isNaN(projectId) ||
-      !Array.isArray(technologyIds)
+      !req.file
     ) {
       return res.status(400).json({
-        message: "Invalid data",
+        message: 'Invalid data',
       });
     }
 
-    await replaceProjectTechnologies(
+    const project =
+      await findProjectById(projectId);
+
+    if (!project) {
+      return res.status(404).json({
+        message: 'Project not found',
+      });
+    }
+
+
+    const oldCoverUrl =
+      project.cover_image_url;
+
+
+    const imageUrl =
+      await uploadImageBuffer(
+        req.file.buffer,
+        `portfolio/projects/${project.slug}/cover`,
+      );
+
+
+    await updateProjectCoverImage(
       projectId,
-      technologyIds,
+      imageUrl,
     );
 
+
+    if (oldCoverUrl) {
+      await deleteImageFromCloudinary(
+        oldCoverUrl,
+      );
+    }
+
+
     res.json({
-      message: "Project technologies updated",
+      message: 'Cover image uploaded',
+      cover_image_url: imageUrl,
     });
+
 
   } catch (error) {
     console.error(error);
 
     res.status(500).json({
-      message: "Failed to update project technologies",
+      message: 'Failed to upload cover image',
     });
   }
 }

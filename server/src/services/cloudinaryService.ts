@@ -35,8 +35,11 @@ export async function deleteImageFromCloudinary(
   const publicIdWithExtension = parts[1]
     .replace(/^v\d+\//, "");
 
-  const publicId = publicIdWithExtension
-    .replace(/\.[^/.]+$/, "");
+  const publicId = decodeURIComponent(
+    publicIdWithExtension.replace(/\.[^/.]+$/, ""),
+  );
+
+  console.log("Cloudinary delete publicId:", publicId);
 
   return cloudinary.uploader.destroy(
     publicId,

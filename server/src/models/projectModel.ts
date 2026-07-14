@@ -50,7 +50,36 @@ export async function findAllPublishedProjects(): Promise<Project[]> {
   return rows as Project[];
 }
 
-export async function findProjectById(
+export async function findAllProjects(): Promise<Project[]> {
+  const [rows] = await db.query(
+    `
+      SELECT
+        id,
+        title,
+        slug,
+        short_description,
+        full_description,
+        project_type,
+        duration,
+        github_url,
+        youtube_url,
+        website_url,
+        demo_url,
+        cover_image_url,
+        is_deployed,
+        status,
+        display_order,
+        created_at,
+        updated_at
+      FROM projects
+      ORDER BY display_order ASC
+    `,
+  );
+
+  return rows as Project[];
+}
+
+export async function findPublishedProjectById(
   id: number,
 ): Promise<Project | null> {
 
@@ -77,6 +106,41 @@ export async function findProjectById(
       FROM projects
       WHERE id = ?
         AND status = 'published'
+    `,
+    [id],
+  );
+
+  const projects = rows as Project[];
+
+  return projects[0] ?? null;
+}
+
+export async function findProjectById(
+  id: number,
+): Promise<Project | null> {
+
+  const [rows] = await db.query(
+    `
+      SELECT
+        id,
+        title,
+        slug,
+        short_description,
+        full_description,
+        project_type,
+        duration,
+        github_url,
+        youtube_url,
+        website_url,
+        demo_url,
+        cover_image_url,
+        is_deployed,
+        status,
+        display_order,
+        created_at,
+        updated_at
+      FROM projects
+      WHERE id = ?
     `,
     [id],
   );
@@ -212,6 +276,25 @@ export async function deleteProject(id: number) {
       WHERE id = ?
     `,
     [id],
+  );
+
+  return result;
+}
+
+export async function updateProjectCoverImage(
+  id: number,
+  coverImageUrl: string,
+) {
+  const [result] = await db.query(
+    `
+      UPDATE projects
+      SET cover_image_url = ?
+      WHERE id = ?
+    `,
+    [
+      coverImageUrl,
+      id,
+    ],
   );
 
   return result;

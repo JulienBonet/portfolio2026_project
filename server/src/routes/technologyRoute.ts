@@ -7,9 +7,12 @@ import {
   createTechnologyController,
   updateTechnologyController,
   deleteTechnologyController,
+  uploadTechnologyIconController,
 } from "../controllers/technologyController.js";
 
 import { adminAuthMiddleware } from "../middleware/adminAuthMiddleware.js";
+
+import { upload } from "../middleware/uploadMiddleware.js";
 
 
 const router = Router();
@@ -34,6 +37,13 @@ router.post(
   "/",
   adminAuthMiddleware,
   createTechnologyController,
+);
+
+router.post(
+  "/:id/icon/upload",
+  adminAuthMiddleware,
+  upload.single("image"),
+  uploadTechnologyIconController,
 );
 
 router.put(

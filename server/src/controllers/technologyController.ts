@@ -11,6 +11,11 @@ import {
   findTechnologyById,
 } from "../models/technologyModel.js";
 
+import {
+  uploadImageBuffer,
+  deleteImageFromCloudinary,
+} from "../services/cloudinaryService.js";
+
 
 export async function getTechnologies(
   _req: Request,
@@ -166,12 +171,19 @@ export async function deleteTechnologyController(
   res: Response,
 ) {
   try {
-
     const id = Number(req.params.id);
 
+    const technology =
+      await findTechnologyById(id);
 
-    const used = await isTechnologyUsed(id);
+    if (!technology) {
+      return res.status(404).json({
+        message: "Technology not found",
+      });
+    }
 
+    const used =
+      await isTechnologyUsed(id);
 
     if (used) {
       return res.status(409).json({
@@ -180,21 +192,82 @@ export async function deleteTechnologyController(
       });
     }
 
+    if (technology.icon_url) {
+      await deleteImageFromCloudinary(
+        technology.icon_url,
+      );
+    }
 
     await deleteTechnology(id);
-
 
     res.json({
       message: "Technology deleted",
     });
 
-
   } catch (error) {
-
     console.error(error);
 
     res.status(500).json({
       message: "Failed to delete technology",
+    });
+  }
+}
+
+export async function uploadTechnologyIconController(
+  req: Request,
+  res: Response,
+) {
+  try {
+    const id = Number(req.params.id);
+
+    if (
+      Number.isNaN(id) ||
+      !req.file
+    ) {
+      return res.status(400).json({
+        message: "Invalid data",
+      });
+    }
+
+    const technology =
+      await findTechnologyById(id);
+
+    if (!technology) {
+      return res.status(404).json({
+        message: "Technology not found",
+      });
+    }
+
+    if (technology.icon_url) {
+      await deleteImageFromCloudinary(
+        technology.icon_url,
+      );
+    }
+
+    const iconUrl =
+      await uploadImageBuffer(
+        req.file.buffer,
+        `portfolio/technologies_ico/${technology.name.toLowerCase()}`,
+      );
+
+    await updateTechnology(
+      technology.id,
+      technology.name,
+      iconUrl,
+      technology.category,
+      technology.is_featured,
+    );
+
+    res.status(201).json({
+      message: "Technology icon uploaded",
+      icon_url: iconUrl,
+    });
+
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      message: "Failed to upload technology icon",
     });
   }
 }
