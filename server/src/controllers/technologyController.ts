@@ -16,6 +16,8 @@ import {
   deleteImageFromCloudinary,
 } from "../services/cloudinaryService.js";
 
+import { slugify } from "../utils/slugify.js";
+
 
 export async function getTechnologies(
   _req: Request,
@@ -247,7 +249,7 @@ export async function uploadTechnologyIconController(
     const iconUrl =
       await uploadImageBuffer(
         req.file.buffer,
-        `portfolio/technologies_ico/${technology.name.toLowerCase()}`,
+        `portfolio/technologies_ico/${slugify(technology.name)}`
       );
 
     await updateTechnology(

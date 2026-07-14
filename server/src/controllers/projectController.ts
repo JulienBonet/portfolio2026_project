@@ -24,6 +24,8 @@ import { findImagesByProjectId }
 import { deleteImageFromCloudinary }
   from "../services/cloudinaryService.js";
 
+import { slugify } from "../utils/slugify.js";
+
 export async function getAllPublishedProjects(_req: Request, res: Response) {
   try {
     const projects = await findAllPublishedProjects();
@@ -259,7 +261,7 @@ export async function uploadProjectCoverController(
     const imageUrl =
       await uploadImageBuffer(
         req.file.buffer,
-        `portfolio/projects/${project.slug}/cover`,
+        `portfolio/projects/${slugify(project.slug)}/cover`
       );
 
 
