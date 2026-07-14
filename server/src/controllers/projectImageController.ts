@@ -3,7 +3,6 @@ import { Request, Response } from 'express';
 import {
   findImagesByProjectId,
   createProjectImage,
-  updateProjectImagePosition,
   deleteProjectImage,
   findProjectImageById,
   getNextImagePosition,

@@ -73,25 +73,6 @@ export async function createProjectImage(
   return result;
 }
 
-export async function updateProjectImagePosition(
-  imageId: number,
-  position: number,
-) {
-  const [result] = await db.query(
-    `
-      UPDATE project_images
-      SET position = ?
-      WHERE id = ?
-    `,
-    [
-      position,
-      imageId,
-    ],
-  );
-
-  return result;
-}
-
 export async function deleteProjectImage(
   imageId: number,
 ) {
