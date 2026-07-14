@@ -20,6 +20,5 @@ server/dist/
 
 coverage
 
-ARCHITECTURE.md
 server/hashPassword.js
 
