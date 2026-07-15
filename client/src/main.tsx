@@ -9,12 +9,20 @@ import "@/assets/css/common.css";
 
 import { router } from "@/router/router";
 
+import {
+  ThemeProvider,
+} from "@mui/material/styles";
+
+import {
+  theme,
+} from "@/theme/theme";
+
 createRoot(
   document.getElementById("root")!,
 ).render(
   <StrictMode>
-    <RouterProvider
-      router={router}
-    />
+    <ThemeProvider theme={theme}>
+      <RouterProvider router={router} />
+    </ThemeProvider>
   </StrictMode>,
 );
