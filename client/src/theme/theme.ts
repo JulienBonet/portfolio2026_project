@@ -19,8 +19,7 @@ export const theme = createTheme({
 
   typography: {
     fontFamily: [
-      "Inter",
-      "Arial",
+      "Jost Variable",
       "sans-serif",
     ].join(","),
   },

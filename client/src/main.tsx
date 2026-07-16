@@ -17,6 +17,8 @@ import {
   theme,
 } from "@/theme/theme";
 
+import "@fontsource-variable/jost/wght.css";
+
 createRoot(
   document.getElementById("root")!,
 ).render(

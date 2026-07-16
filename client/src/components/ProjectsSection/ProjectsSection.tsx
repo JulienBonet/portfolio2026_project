@@ -1,9 +1,22 @@
+import {
+  Box,
+  Container,
+  Typography,
+} from "@mui/material";
+
 export default function ProjectsSection() {
   return (
-    <section>
-      <h2>
-        Projets
-      </h2>
-    </section>
+    <Box
+      component="section"
+      sx={{
+        minHeight: "100vh",
+      }}
+    >
+      <Container maxWidth="lg">
+        <Typography variant="h3">
+          Projets
+        </Typography>
+      </Container>
+    </Box>
   );
 }

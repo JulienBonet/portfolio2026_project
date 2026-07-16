@@ -9,3 +9,9 @@ export async function getTechnologies() {
     "/technologies",
   );
 }
+
+export async function getTechnologiesFeatured() {
+  return apiFetch<Technology[]>(
+    "/technologies/featured",
+  );
+}
