@@ -1,7 +1,7 @@
 export default function Header() {
   return (
     <header>
-      <h1>Portfolio 2026</h1>
+      <p style={{ color: "white" }}>PORTFOLIO 2026</p>
     </header>
   );
 }

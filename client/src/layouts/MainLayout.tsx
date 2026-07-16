@@ -8,7 +8,7 @@ export default function MainLayout() {
     <>
       <Header />
 
-      <main>
+      <main className="main-content">
         <Outlet />
       </main>
 

@@ -1,12 +1,58 @@
 :root {
-  font-family: system-ui, sans-serif;
+  --font-00: "jost";
+  --color-00: #ffffff;
+  --color-01: black;
+  --color-02: #253337;
+  --color-03: #5c6c73;
+  --color-04: #9db5c0;
+  --color-05: #c2e0e3;
+  --color-06: #4d83f50f;
+  --color-07: #f5df4d;
+  --color-08: #ffffff82;
+  --color-09: #ffffff94;
 }
+
 
 html {
   scroll-behavior: smooth;
 }
 
 body {
+  background-image: url(../images/background_ico.png);
+}
+
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+
+  height: 50px;
+  background-color: var(--color-02);
+
+  z-index: 1000;
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  height: 50px;
+  background-color: var(--color-02);
+
+  z-index: 1000;
+}
+
+.main-content {
+  min-height: calc(100vh - 100px);
+
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+/* body {
   min-height: 100vh;
 }
 
@@ -20,4 +66,4 @@ input,
 textarea,
 select {
   font: inherit;
-}
+} */

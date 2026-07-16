@@ -1,7 +1,7 @@
 export default function Footer() {
   return (
     <footer>
-      <p>© Julien Bonet</p>
+      <p style={{ color: "white" }}>© Julien Bonet</p>
     </footer>
   );
 }
