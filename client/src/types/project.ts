@@ -7,42 +7,27 @@ export interface ProjectImage {
   position: number;
 }
 
-export interface Project {
+export type Project = {
   id: number;
-
   title: string;
   slug: string;
-
   short_description: string;
-  full_description: string | null;
-
-  project_type:
-    | "school"
-    | "hackathon"
-    | "personal"
-    | "professional";
-
+  project_type: string;
   duration: string | null;
-
-  github_url: string | null;
-  website_url: string | null;
-  demo_url: string | null;
-  youtube_url: string | null;
-
   cover_image_url: string | null;
+  website_url: string | null;
+  github_url: string | null;
+  is_deployed: number;
+};
 
-  is_deployed: boolean;
-
-  status:
-    | "draft"
-    | "published";
-
-  display_order: number;
-
-  created_at: string;
-  updated_at: string;
-
+export type ProjectDetail = Project & {
+  full_description: string;
+  youtube_url: string | null;
   technologies: Technology[];
+  images: {
+    id: number;
+    image_url: string;
+    position: number;
+  }[];
+};
 
-  images: ProjectImage[];
-}
