@@ -1,12 +1,14 @@
 import { Box, Container, Stack, Typography } from "@mui/material";
 import { useState } from "react";
 
-const CONTACT_EMAIL = "contact@julienbonet.fr";
-const GITHUB_URL = "https://github.com/JulienBonet";
+const CONTACT_EMAIL = import.meta.env.VITE_CONTACT_EMAIL;
+const GITHUB_URL = import.meta.env.VITE_GITHUB_URL;
+const LINKEDIN_URL = import.meta.env.VITE_LINKEDIN_URL;
 
 export default function ContactSection() {
   const [mailHovered, setMailHovered] = useState(false);
   const [githubHovered, setGithubHovered] = useState(false);
+  const [linkedinHovered, setLinkedinHovered] = useState(false);
 
   return (
     <Box
@@ -127,6 +129,42 @@ export default function ContactSection() {
                   }}
                 >
                   Mon GitHub
+                </Typography>
+              </Stack>
+
+              {/* LINKEDIN */}
+
+              <Stack
+                component="a"
+                href={LINKEDIN_URL}
+                target="_blank"
+                rel="noreferrer"
+                spacing={2}
+                sx={{
+                  alignItems: "center",
+                  textDecoration: "none",
+                  color: "inherit",
+                }}
+              >
+                <Box
+                  component="img"
+                  src={linkedinHovered ? "/images/linkedin_hov.png" : "/images/linkedin.png"}
+                  alt="GitHub"
+                  onMouseEnter={() => setLinkedinHovered(true)}
+                  onMouseLeave={() => setLinkedinHovered(false)}
+                  sx={{
+                    width: 120,
+                    cursor: "pointer",
+                  }}
+                />
+
+                <Typography
+                  sx={{
+                    fontSize: "1.2rem",
+                    textAlign: "center",
+                  }}
+                >
+                  Linkedin
                 </Typography>
               </Stack>
             </Stack>
