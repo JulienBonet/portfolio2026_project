@@ -20,7 +20,7 @@ export default function Footer() {
         borderTop: "1px solid black",
         display: "flex",
         alignItems: "center",
-        justifyContent: "space-between",
+        justifyContent: {xs: "center", sm: "space-between"},
         px: {
           xs: 2,
           md: 4,
@@ -36,7 +36,10 @@ export default function Footer() {
         © 2026 | Julien Bonet
       </Typography>
 
-      <Stack direction="row" spacing={3}>
+      <Stack direction="row" spacing={3}
+      sx={{
+        display: {xs: 'none', sm: 'flex'}
+      }}>
         <Stack
           component="a"
           href={`mailto:${CONTACT_EMAIL}`}
