@@ -4,7 +4,7 @@ import AboutMeBlock from "./AboutMeBlock";
 
 export default function PresentationSection() {
   return (
-    <Box
+    <Stack
       component="section"
       id="presentation"
       sx={{
@@ -12,7 +12,9 @@ export default function PresentationSection() {
           xs: "auto",
           md: "calc(100vh - 100px)",
         },
-        scrollMarginTop: "60px",
+        scrollMarginTop: "70px",
+        justifyContent: "center",
+        alignItems: "center",
       }}
     >
       <Container
@@ -31,10 +33,6 @@ export default function PresentationSection() {
           spacing={3}
           sx={{
             height: "100%",
-            minHeight: {
-              xs: "auto",
-              md: "calc(100vh - 100px)",
-            },
             p: 2,
           }}
         >
@@ -130,6 +128,6 @@ export default function PresentationSection() {
           </Grid>
         </Grid>
       </Container>
-    </Box>
+    </Stack>
   );
 }

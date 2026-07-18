@@ -31,7 +31,7 @@ export default function ProjectsSection() {
       component="section"
       id="projects"
       sx={{
-        scrollMarginTop: "60px",
+        scrollMarginTop: "70px",
       }}
     >
       <Container
