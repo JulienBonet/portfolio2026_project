@@ -6,6 +6,7 @@ export default function PresentationSection() {
   return (
     <Box
       component="section"
+      id="presentation"
       sx={{
         minHeight: {
           xs: "auto",

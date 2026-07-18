@@ -11,6 +11,7 @@ export default function ContactSection() {
   return (
     <Box
       component="section"
+      id="contact"
       sx={{
         minHeight: "calc(100vh - 100px)",
         display: "flex",
