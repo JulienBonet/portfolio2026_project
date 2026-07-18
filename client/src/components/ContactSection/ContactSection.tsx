@@ -59,7 +59,6 @@ export default function ContactSection() {
               sx={{
                 justifyContent: "space-evenly",
                 alignItems: "center",
-                
               }}
             >
               {/* MAIL */}

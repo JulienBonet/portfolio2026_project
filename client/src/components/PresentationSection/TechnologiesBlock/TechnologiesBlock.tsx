@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 
 import {
-  CircularProgress,
   Divider,
   Stack,
   Typography,
@@ -12,6 +11,10 @@ import { getTechnologiesFeatured } from "@/api/technologies.api";
 import TechnologyGroup from "./TechnologyGroup";
 
 import type { Technology } from "@/types/technology";
+
+import ErrorBlock from "../../common/ErrorBlock";
+
+import LoadingBlock from "../../common/LoadingBlock"
 
 export default function TechnologiesBlock() {
   const [technologies, setTechnologies] = useState<Technology[]>([]);
@@ -42,39 +45,16 @@ export default function TechnologiesBlock() {
   }, []);
 
   if (loading) {
-    return (
-      <Stack
-        sx={{
-          width: "95%",
-          minHeight: 300,
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <CircularProgress />
-      </Stack>
-    );
-  }
+  return <LoadingBlock />;
+}
 
-  if (error) {
-    return (
-      <Stack
-        sx={{
-          width: "95%",
-          minHeight: 300,
-          justifyContent: "center",
-          alignItems: "center",
-          border: "1px dashed black",
-          borderRadius: "5px",
-          backgroundColor: "var(--color-00)",
-        }}
-      >
-        <Typography>
-          {error}
-        </Typography>
-      </Stack>
-    );
-  }
+if (error) {
+  return (
+    <ErrorBlock
+      message="Impossible de charger les technologies."
+    />
+  );
+}
 
   const frontend = technologies.filter(
     (tech) => tech.category === "frontend",

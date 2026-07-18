@@ -8,7 +8,9 @@ import ProjectCard from "./ProjectCard";
 
 import type { Project } from "@/types/project";
 
-import CircularProgress from "@mui/material/CircularProgress";
+import ErrorBlock from "../common/ErrorBlock";
+
+import LoadingBlock from "../common/LoadingBlock";
 
 export default function ProjectsSection() {
   const [projects, setProjects] = useState<Project[]>([]);
@@ -37,38 +39,12 @@ export default function ProjectsSection() {
   }, []);
 
   if (loading) {
-  return (
-    <Box
-      component="section"
-      sx={{
-        minHeight: "calc(100vh - 100px)",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <CircularProgress />
-    </Box>
-  );
-}
+    return <LoadingBlock />;
+  }
 
-if (error) {
-  return (
-    <Box
-      component="section"
-      sx={{
-        minHeight: "calc(100vh - 100px)",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Typography>
-        {error}
-      </Typography>
-    </Box>
-  );
-}
+  if (error) {
+    return <ErrorBlock message="Impossible de charger les technologies." />;
+  }
 
   return (
     <Box
