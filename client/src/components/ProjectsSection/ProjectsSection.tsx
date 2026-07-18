@@ -27,7 +27,13 @@ export default function ProjectsSection() {
   }, []);
 
   return (
-    <Box component="section" id="projects">
+    <Box
+      component="section"
+      id="projects"
+      sx={{
+        scrollMarginTop: "60px",
+      }}
+    >
       <Container
         maxWidth="xl"
         sx={{
@@ -36,7 +42,7 @@ export default function ProjectsSection() {
           borderRadius: "50px",
           padding: "2rem 0",
           pb: "3rem",
-          width: "90%"
+          width: "90%",
         }}
       >
         <Typography
@@ -53,7 +59,7 @@ export default function ProjectsSection() {
         >
           PROJETS
         </Typography>
-        <Stack spacing={3}>
+        <Stack spacing={4}>
           {projects.map((project) => (
             <ProjectCard key={project.id} project={project} />
           ))}

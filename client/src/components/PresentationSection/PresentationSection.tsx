@@ -12,6 +12,7 @@ export default function PresentationSection() {
           xs: "auto",
           md: "calc(100vh - 100px)",
         },
+        scrollMarginTop: "60px",
       }}
     >
       <Container
@@ -34,7 +35,7 @@ export default function PresentationSection() {
               xs: "auto",
               md: "calc(100vh - 100px)",
             },
-            p:2
+            p: 2,
           }}
         >
           {/* Zone 1 */}
@@ -56,7 +57,7 @@ export default function PresentationSection() {
                 variant="h1"
                 sx={{
                   fontSize: {
-                    xs: "2.8em",
+                    xs: "2em",
                     md: "4em",
                   },
                   fontWeight: 500,
