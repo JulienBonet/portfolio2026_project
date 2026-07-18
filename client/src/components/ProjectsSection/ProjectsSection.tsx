@@ -8,23 +8,67 @@ import ProjectCard from "./ProjectCard";
 
 import type { Project } from "@/types/project";
 
+import CircularProgress from "@mui/material/CircularProgress";
+
 export default function ProjectsSection() {
   const [projects, setProjects] = useState<Project[]>([]);
-
-  console.log(projects);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     async function loadProjects() {
       try {
+        setLoading(true);
+
         const data = await getProjects();
+
         setProjects(data);
-      } catch (error) {
-        console.error(error);
+        setError(null);
+      } catch (err) {
+        console.error(err);
+
+        setError("Impossible de charger les projets.");
+      } finally {
+        setLoading(false);
       }
     }
 
     loadProjects();
   }, []);
+
+  if (loading) {
+  return (
+    <Box
+      component="section"
+      sx={{
+        minHeight: "calc(100vh - 100px)",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <CircularProgress />
+    </Box>
+  );
+}
+
+if (error) {
+  return (
+    <Box
+      component="section"
+      sx={{
+        minHeight: "calc(100vh - 100px)",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <Typography>
+        {error}
+      </Typography>
+    </Box>
+  );
+}
 
   return (
     <Box
