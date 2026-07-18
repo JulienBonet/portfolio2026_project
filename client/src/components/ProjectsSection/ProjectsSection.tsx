@@ -36,7 +36,7 @@ export default function ProjectsSection() {
           borderRadius: "50px",
           padding: "2rem 0",
           pb: "3rem",
-          width: "90%",
+          width: "90%"
         }}
       >
         <Typography

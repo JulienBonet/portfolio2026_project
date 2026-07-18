@@ -14,19 +14,27 @@ export default function PresentationSection() {
         },
       }}
     >
-      <Container maxWidth="xl">
+      <Container
+        maxWidth="xl"
+        sx={{
+          border: "solid 1px black",
+          borderRadius: "50px",
+          my: "2rem",
+          mb: "4rem",
+          padding: "1rem 0",
+          width: "90%",
+        }}
+      >
         <Grid
           container
-          spacing={{
-            xs: 3,
-          }}
+          spacing={3}
           sx={{
             height: "100%",
             minHeight: {
               xs: "auto",
               md: "calc(100vh - 100px)",
             },
-            py: "2rem",
+            p:2
           }}
         >
           {/* Zone 1 */}
@@ -52,7 +60,7 @@ export default function PresentationSection() {
                     md: "4em",
                   },
                   fontWeight: 500,
-                  textAlign: 'center',
+                  textAlign: "center",
                 }}
               >
                 JULIEN BONET
@@ -65,9 +73,8 @@ export default function PresentationSection() {
                     xs: "1.5em",
                     md: "2em",
                   },
-                  textAlign: 'center',
+                  textAlign: "center",
                 }}
-            
               >
                 Développeur Web Full Stack
               </Typography>

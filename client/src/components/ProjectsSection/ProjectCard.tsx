@@ -201,7 +201,7 @@ export default function ProjectCard({ project }: Props) {
             rel="noreferrer"
             sx={{
               display: "inline-block",
-              width: "40%",
+              width: {xs: "30%", sm: "20%", md: "50%"},
             }}
           >
             <Box

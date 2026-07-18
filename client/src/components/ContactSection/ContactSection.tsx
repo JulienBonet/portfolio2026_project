@@ -18,17 +18,19 @@ export default function ContactSection() {
         alignItems: "center",
       }}
     >
-      <Container maxWidth="xl">
-        <Stack spacing={4}
-          sx={{
-            backgroundColor: "var(--color-00)",
-            border: "1px solid black",
-            borderRadius: "50px",
-            py: {xs: 5, md:"5rem"},
-            px: 4,
-            justifyContent: 'center',
-          }}
-        >
+      <Container
+        maxWidth="xl"
+        sx={{
+          backgroundColor: "var(--color-00)",
+          border: "1px solid black",
+          borderRadius: "50px",
+          py: { xs: 5, md: "5rem" },
+          px: 4,
+          justifyContent: "center",
+          width: "90%",
+        }}
+      >
+        <Stack spacing={4} sx={{}}>
           <Typography
             variant="h2"
             sx={{
@@ -55,6 +57,7 @@ export default function ContactSection() {
               sx={{
                 justifyContent: "space-evenly",
                 alignItems: "center",
+                
               }}
             >
               {/* MAIL */}

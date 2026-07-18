@@ -62,6 +62,20 @@ export default function TechnologiesBlock() {
         }}
       />
 
+      <Typography
+        variant="h3"
+        sx={{
+          display: {xs: "block", md:"none"},
+          fontSize: {
+            xs: "1.5em",
+            md: "2em",
+          },
+          fontWeight: 500,
+        }}
+      >
+        Back-end
+      </Typography>
+
       <Stack direction="row" spacing={4}>
         <TechnologyGroup technologies={backend} />
 
@@ -71,6 +85,7 @@ export default function TechnologiesBlock() {
       <Typography
         variant="h3"
         sx={{
+          display: {xs: "none", md:"block"},
           fontSize: {
             xs: "1.5em",
             md: "2em",

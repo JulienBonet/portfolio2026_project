@@ -30,7 +30,7 @@ export default function ProjectDetails({ project }: Props) {
           <Box>
             <Typography
               sx={{
-                fontSize: "2em",
+                fontSize: {xs: "1.5em", md: "2em"},
                 fontWeight: 500,
               }}
             >
@@ -61,7 +61,7 @@ export default function ProjectDetails({ project }: Props) {
             <Typography
               sx={{
                 mb: 2,
-                fontSize: "2em",
+                fontSize: {xs: "1.5em", md: "2em"},
                 fontWeight: 500,
               }}
             >
@@ -88,7 +88,7 @@ export default function ProjectDetails({ project }: Props) {
       >
         <Box
           sx={{
-            width: "85%",
+            width:{ xs: "100%", md: "85%" },
           }}
         >
           <ProjectVisual project={project} />

@@ -23,6 +23,7 @@ export default function TechnologyGroup({ technologies }: TechnologyGroupProps) 
             key={technology.id}
             sx={{
               alignItems: "center",
+              width: 70,
             }}
           >
             <Box
@@ -36,6 +37,7 @@ export default function TechnologyGroup({ technologies }: TechnologyGroupProps) 
             />
             <Typography
               sx={{
+                fontSize: "0.9em",
                 mt: 1,
               }}
             >
