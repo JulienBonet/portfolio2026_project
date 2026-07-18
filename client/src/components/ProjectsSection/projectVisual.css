@@ -1,0 +1,16 @@
+/* Flèches */
+.swiper-button-next,
+.swiper-button-prev {
+  color: var(--color-02);
+}
+
+/* Puces inactives */
+.swiper-pagination-bullet {
+  background-color: var(--color-03);
+  opacity: 1;
+}
+
+/* Puce active */
+.swiper-pagination-bullet-active {
+  background-color: var(--color-07);
+}

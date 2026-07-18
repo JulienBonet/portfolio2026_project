@@ -1,10 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Box, Button, Collapse, Stack, Typography } from "@mui/material";
 
-import type { Project } from "@/types/project";
+import type { Project, ProjectDetail } from "@/types/project";
 
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+
+import { getProjectById } from "@/api/projects.api";
+
+import ProjectDetails from "./ProjectDetails";
 
 type Props = {
   project: Project;
@@ -67,6 +71,24 @@ function getProjectLogoHover(project: Project) {
 export default function ProjectCard({ project }: Props) {
   const [expanded, setExpanded] = useState(false);
   const [hovered, setHovered] = useState(false);
+  const [projectDetail, setProjectDetail] = useState<ProjectDetail | null>(null);
+
+  useEffect(() => {
+    async function loadProjectDetail() {
+      if (!expanded || projectDetail) {
+        return;
+      }
+
+      try {
+        const data = await getProjectById(project.id);
+        setProjectDetail(data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    loadProjectDetail();
+  }, [expanded, project.id, projectDetail]);
 
   return (
     <Stack sx={{ flexDirection: "column" }}>
@@ -168,17 +190,18 @@ export default function ProjectCard({ project }: Props) {
           </Stack>
         </Stack>
 
+        {/* Btn Link */}
         <Stack
           sx={{ width: { xs: "95%", md: "20%" }, justifyContent: "center", alignItems: "center" }}
         >
-          <Button
+          <Box
             component="a"
             href={getProjectUrl(project) ?? undefined}
             target="_blank"
             rel="noreferrer"
             sx={{
-              minWidth: "unset",
-              padding: 0,
+              display: "inline-block",
+              width: "40%",
             }}
           >
             <Box
@@ -188,18 +211,21 @@ export default function ProjectCard({ project }: Props) {
               onMouseEnter={() => setHovered(true)}
               onMouseLeave={() => setHovered(false)}
               sx={{
-                width: { xs: "30%", md: "40%" },
+                width: "100%",
                 border: "solid 1px black",
                 borderRadius: "10px",
+                transition: "transform 0.2s ease",
+
+                "&:hover": {
+                  transform: "scale(1.05)",
+                },
               }}
             />
-          </Button>
+          </Box>
         </Stack>
       </Stack>
 
-      {/* Actions */}
-
-      {/* Placeholder détail */}
+      {/* details section*/}
       <Collapse in={expanded}>
         <Box
           sx={{
@@ -210,19 +236,11 @@ export default function ProjectCard({ project }: Props) {
             mx: 2,
           }}
         >
-          <Typography variant="h5">Zone détail du projet</Typography>
-
-          <Typography sx={{ mt: 2 }}>Ici viendront :</Typography>
-
-          <ul>
-            <li>technologies</li>
-            <li>description Tiptap</li>
-            <li>galerie d'images</li>
-            <li>vidéo YouTube</li>
-          </ul>
+          {projectDetail && <ProjectDetails project={projectDetail} />}
         </Box>
       </Collapse>
 
+      {/* toggle btn */}
       <Stack
         sx={{
           alignItems: "center",
@@ -240,6 +258,7 @@ export default function ProjectCard({ project }: Props) {
             border: "1px dashed black",
             borderTop: "none",
             borderRadius: "0px 0px 10px 10px",
+            backgroundColor: "var(--color-06)",
           }}
         >
           <KeyboardArrowDownIcon
