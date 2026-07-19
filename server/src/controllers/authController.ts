@@ -1,38 +1,33 @@
-import { Request, Response } from "express";
+import { Request, Response } from 'express';
 
-import { authenticateUser } from "../services/authService.js";
+import { authenticateUser } from '../services/authService.js';
 
-export async function loginController(
-  req: Request,
-  res: Response,
-) {
+export async function loginController(req: Request, res: Response) {
   try {
+    console.log(req.headers);
+    console.log(req.body);
     const { login, password } = req.body;
 
     if (!login || !password) {
       return res.status(400).json({
-        message: "Missing credentials",
+        message: 'Missing credentials',
       });
     }
 
-    const result = await authenticateUser(
-      login,
-      password,
-    );
+    const result = await authenticateUser(login, password);
 
     if (!result) {
       return res.status(401).json({
-        message: "Invalid credentials",
+        message: 'Invalid credentials',
       });
     }
 
     res.json(result);
-
   } catch (error) {
     console.error(error);
 
     res.status(500).json({
-      message: "Authentication failed",
+      message: 'Authentication failed',
     });
   }
 }
