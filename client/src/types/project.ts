@@ -7,6 +7,10 @@ export interface ProjectImage {
   position: number;
 }
 
+export type ProjectStatus =
+  | "draft"
+  | "published";
+
 export type Project = {
   id: number;
   title: string;
@@ -17,6 +21,7 @@ export type Project = {
   cover_image_url: string | null;
   website_url: string | null;
   github_url: string | null;
+  status: ProjectStatus;
   is_deployed: number;
 };
 
