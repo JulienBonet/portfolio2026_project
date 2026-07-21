@@ -36,7 +36,7 @@ export default function ProjectTechnologyGroup({
           >
             <Box
               component="img"
-              src={technology.icon_url ?? ""}
+              src={technology.icon_url ?? "/images/technology_placeholder.png"}
               alt={technology.name}
               sx={{
                 width: 35,

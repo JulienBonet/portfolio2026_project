@@ -16,9 +16,6 @@ import {
   deleteImageFromCloudinary,
 } from "../services/cloudinaryService.js";
 
-import { slugify } from "../utils/slugify.js";
-
-
 export async function getTechnologies(
   _req: Request,
   res: Response,
@@ -36,7 +33,6 @@ export async function getTechnologies(
     });
   }
 }
-
 
 export async function getTechnologiesFeatured(
   _req: Request,
@@ -64,7 +60,8 @@ export async function getTechnologyById(
   try {
     const id = Number(req.params.id);
 
-    const technology = await findTechnologyById(id);
+    const technology =
+      await findTechnologyById(id);
 
     if (!technology) {
       return res.status(404).json({
@@ -83,7 +80,6 @@ export async function getTechnologyById(
   }
 }
 
-
 export async function createTechnologyController(
   req: Request,
   res: Response,
@@ -96,27 +92,24 @@ export async function createTechnologyController(
       is_featured,
     } = req.body;
 
-
     if (!name || !category) {
       return res.status(400).json({
         message: "Missing required fields",
       });
     }
 
-
-    const result = await createTechnology(
-      name,
-      icon_url ?? null,
-      category as TechnologyCategory,
-      Boolean(is_featured),
-    );
-
+    const result =
+      await createTechnology(
+        name,
+        icon_url ?? null,
+        category as TechnologyCategory,
+        Boolean(is_featured),
+      );
 
     res.status(201).json({
       message: "Technology created",
       result,
     });
-
 
   } catch (error) {
     console.error(error);
@@ -127,36 +120,39 @@ export async function createTechnologyController(
   }
 }
 
-
 export async function updateTechnologyController(
   req: Request,
   res: Response,
 ) {
   try {
-
     const id = Number(req.params.id);
+
+    const technology =
+      await findTechnologyById(id);
+
+    if (!technology) {
+      return res.status(404).json({
+        message: "Technology not found",
+      });
+    }
 
     const {
       name,
-      icon_url,
       category,
       is_featured,
     } = req.body;
 
-
     await updateTechnology(
       id,
       name,
-      icon_url ?? null,
+      technology.icon_url,
       category as TechnologyCategory,
       Boolean(is_featured),
     );
 
-
     res.json({
       message: "Technology updated",
     });
-
 
   } catch (error) {
     console.error(error);
@@ -166,7 +162,6 @@ export async function updateTechnologyController(
     });
   }
 }
-
 
 export async function deleteTechnologyController(
   req: Request,
@@ -249,7 +244,7 @@ export async function uploadTechnologyIconController(
     const iconUrl =
       await uploadImageBuffer(
         req.file.buffer,
-        `portfolio/technologies_ico/${slugify(technology.name)}`
+        "portfolio/technologies_ico",
       );
 
     await updateTechnology(

@@ -16,7 +16,11 @@ export type Project = {
   title: string;
   slug: string;
   short_description: string;
-  project_type: string;
+    project_type:
+    | "school"
+    | "hackathon"
+    | "personal"
+    | "professional";
   duration: string | null;
   cover_image_url: string | null;
   website_url: string | null;
