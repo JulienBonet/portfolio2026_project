@@ -6,6 +6,8 @@ import ProjectTechnologyGroup from "./ProjectTechnologyGroup";
 
 import ProjectVisual from "./ProjectVisual";
 
+import "../../assets/css/richText.css"
+
 type Props = {
   project: ProjectDetail;
 };
@@ -30,7 +32,7 @@ export default function ProjectDetails({ project }: Props) {
           <Box>
             <Typography
               sx={{
-                fontSize: {xs: "1.5em", md: "2em"},
+                fontSize: { xs: "1.5em", md: "2em" },
                 fontWeight: 500,
               }}
             >
@@ -61,7 +63,7 @@ export default function ProjectDetails({ project }: Props) {
             <Typography
               sx={{
                 mb: 2,
-                fontSize: {xs: "1.5em", md: "2em"},
+                fontSize: { xs: "1.5em", md: "2em" },
                 fontWeight: 500,
               }}
             >
@@ -69,6 +71,7 @@ export default function ProjectDetails({ project }: Props) {
             </Typography>
 
             <Box
+              className="rich-text-content"
               dangerouslySetInnerHTML={{
                 __html: project.full_description,
               }}
@@ -88,7 +91,7 @@ export default function ProjectDetails({ project }: Props) {
       >
         <Box
           sx={{
-            width:{ xs: "100%", md: "85%" },
+            width: { xs: "100%", md: "85%" },
           }}
         >
           <ProjectVisual project={project} />

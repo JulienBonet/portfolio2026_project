@@ -113,7 +113,7 @@ export async function uploadProjectImageController(
     const imageUrl =
       await uploadImageBuffer(
         req.file.buffer,
-        `portfolio/projects/${project.slug}`,
+        `portfolio/projects`,
       );
 
     const position =

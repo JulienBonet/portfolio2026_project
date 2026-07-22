@@ -1,0 +1,16 @@
+.rich-text-content strong {
+  font-weight: 900;
+}
+
+.rich-text-content em {
+  font-style: italic;
+}
+
+.rich-text-content p {
+  margin-bottom: 1rem;
+}
+
+.rich-text-content a {
+  color: inherit;
+  text-decoration: underline;
+}

@@ -10,21 +10,17 @@ import {
   updateProjectCoverImage,
 } from '../models/projectModel.js';
 
-import {
-  uploadImageBuffer,
-} from '../services/cloudinaryService.js';
+import { uploadImageBuffer } from '../services/cloudinaryService.js';
 
 import { getPublishedProjectDetails, getAdminProjectDetails } from '../services/projectService.js';
 
 import { replaceProjectTechnologies } from '../models/projectTechnologyModel.js';
 
-import { findImagesByProjectId }
-  from "../models/projectImageModel.js";
+import { findImagesByProjectId } from '../models/projectImageModel.js';
 
-import { deleteImageFromCloudinary }
-  from "../services/cloudinaryService.js";
+import { deleteImageFromCloudinary } from '../services/cloudinaryService.js';
 
-import { slugify } from "../utils/slugify.js";
+import { slugify } from '../utils/slugify.js';
 
 export async function getAllPublishedProjects(_req: Request, res: Response) {
   try {
@@ -137,7 +133,19 @@ export async function updateProjectController(req: Request, res: Response) {
       });
     }
 
-    const result = await updateProject(id, req.body);
+    const project = await findProjectById(id);
+
+    if (!project) {
+      return res.status(404).json({
+        message: 'Project not found',
+      });
+    }
+
+    const result = await updateProject(id, {
+      ...req.body,
+      cover_image_url:
+        req.body.cover_image_url !== undefined ? req.body.cover_image_url : project.cover_image_url,
+    });
 
     res.json({
       message: 'Project updated',
@@ -152,16 +160,13 @@ export async function updateProjectController(req: Request, res: Response) {
   }
 }
 
-export async function deleteProjectController(
-  req: Request,
-  res: Response,
-) {
+export async function deleteProjectController(req: Request, res: Response) {
   try {
     const id = Number(req.params.id);
 
     if (Number.isNaN(id)) {
       return res.status(400).json({
-        message: "Invalid project id",
+        message: 'Invalid project id',
       });
     }
 
@@ -169,35 +174,30 @@ export async function deleteProjectController(
 
     if (!project) {
       return res.status(404).json({
-        message: "Project not found",
+        message: 'Project not found',
       });
     }
 
     if (project.cover_image_url) {
-      await deleteImageFromCloudinary(
-        project.cover_image_url,
-      );
+      await deleteImageFromCloudinary(project.cover_image_url);
     }
 
     const images = await findImagesByProjectId(id);
 
     for (const image of images) {
-      await deleteImageFromCloudinary(
-        image.image_url,
-      );
+      await deleteImageFromCloudinary(image.image_url);
     }
 
     await deleteProject(id);
 
     res.json({
-      message: "Project deleted",
+      message: 'Project deleted',
     });
-
   } catch (error) {
     console.error(error);
 
     res.status(500).json({
-      message: "Failed to delete project",
+      message: 'Failed to delete project',
     });
   }
 }
@@ -228,24 +228,17 @@ export async function updateProjectTechnologies(req: Request, res: Response) {
   }
 }
 
-export async function uploadProjectCoverController(
-  req: Request,
-  res: Response,
-) {
+export async function uploadProjectCoverController(req: Request, res: Response) {
   try {
     const projectId = Number(req.params.id);
 
-    if (
-      Number.isNaN(projectId) ||
-      !req.file
-    ) {
+    if (Number.isNaN(projectId) || !req.file) {
       return res.status(400).json({
         message: 'Invalid data',
       });
     }
 
-    const project =
-      await findProjectById(projectId);
+    const project = await findProjectById(projectId);
 
     if (!project) {
       return res.status(404).json({
@@ -253,37 +246,23 @@ export async function uploadProjectCoverController(
       });
     }
 
+    const oldCoverUrl = project.cover_image_url;
 
-    const oldCoverUrl =
-      project.cover_image_url;
-
-
-    const imageUrl =
-      await uploadImageBuffer(
-        req.file.buffer,
-        `portfolio/projects/${slugify(project.slug)}/cover`
-      );
-
-
-    await updateProjectCoverImage(
-      projectId,
-      imageUrl,
+    const imageUrl = await uploadImageBuffer(
+      req.file.buffer,
+      `portfolio/projects`,
     );
 
+    await updateProjectCoverImage(projectId, imageUrl);
 
     if (oldCoverUrl) {
-      await deleteImageFromCloudinary(
-        oldCoverUrl,
-      );
+      await deleteImageFromCloudinary(oldCoverUrl);
     }
-
 
     res.json({
       message: 'Cover image uploaded',
       cover_image_url: imageUrl,
     });
-
-
   } catch (error) {
     console.error(error);
 

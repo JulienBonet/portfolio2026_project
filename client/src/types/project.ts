@@ -26,7 +26,8 @@ export type Project = {
   website_url: string | null;
   github_url: string | null;
   status: ProjectStatus;
-  is_deployed: number;
+  is_deployed: boolean;
+  display_order: number;
 };
 
 export type ProjectDetail = Project & {
@@ -39,4 +40,11 @@ export type ProjectDetail = Project & {
     position: number;
   }[];
 };
+
+export interface ProjectImage {
+  id: number;
+  project_id: number;
+  image_url: string;
+  position: number;
+}
 

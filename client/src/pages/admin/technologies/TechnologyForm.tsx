@@ -1,20 +1,8 @@
 import { useState } from "react";
 
-import {
-  Box,
-  Button,
-  Checkbox,
-  FormControlLabel,
-  MenuItem,
-  Stack,
-  TextField,
-} from "@mui/material";
+import { Box, Button, Checkbox, FormControlLabel, MenuItem, Stack, TextField } from "@mui/material";
 
-import {
-  createTechnology,
-  updateTechnology,
-  uploadTechnologyIcon,
-} from "@/api/technologies.api";
+import { createTechnology, updateTechnology, uploadTechnologyIcon } from "@/api/technologies.api";
 
 import AppSnackbar from "@/components/common/AppSnackbar";
 
@@ -25,139 +13,74 @@ interface Props {
   onSuccess?: () => void;
 }
 
-export default function TechnologyForm({
-  technology,
-  onSuccess,
-}: Props) {
-  const [name, setName] =
-    useState(
-      technology?.name ?? "",
-    );
+export default function TechnologyForm({ technology, onSuccess }: Props) {
+  const [name, setName] = useState(technology?.name ?? "");
 
-  const [
-    category,
-    setCategory,
-  ] = useState<
-    Technology["category"]
-  >(
-    technology?.category ??
-      "frontend",
+  const [category, setCategory] = useState<Technology["category"]>(
+    technology?.category ?? "frontend",
   );
 
-  const [
-    isFeatured,
-    setIsFeatured,
-  ] = useState(
-    technology?.is_featured ??
-      false,
-  );
+  const [isFeatured, setIsFeatured] = useState(technology?.is_featured ?? false);
 
-  const [
-    iconFile,
-    setIconFile,
-  ] = useState<File | null>(
-    null,
-  );
+  const [iconFile, setIconFile] = useState<File | null>(null);
 
-  const [
-    loading,
-    setLoading,
-  ] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const [
-    snackbarOpen,
-    setSnackbarOpen,
-  ] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
 
-  const [
-    snackbarMessage,
-    setSnackbarMessage,
-  ] = useState("");
+  const [snackbarMessage, setSnackbarMessage] = useState("");
 
-  const [
-    snackbarSeverity,
-    setSnackbarSeverity,
-  ] = useState<
-    "success"
-    | "error"
-    | "warning"
-    | "info"
+  const [snackbarSeverity, setSnackbarSeverity] = useState<
+    "success" | "error" | "warning" | "info"
   >("success");
 
-  async function handleSubmit(
-    event: React.FormEvent,
-  ) {
+  async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
 
     try {
       setLoading(true);
 
       if (technology) {
-        await updateTechnology(
-          technology.id,
-          {
-            name,
-            category,
-            is_featured:
-              isFeatured,
-          },
-        );
+        await updateTechnology(technology.id, {
+          name,
+          category,
+          is_featured: isFeatured,
+        });
 
         if (iconFile) {
-          await uploadTechnologyIcon(
-            technology.id,
-            iconFile,
-          );
+          await uploadTechnologyIcon(technology.id, iconFile);
         }
 
-        setSnackbarMessage(
-          "Technologie mise à jour",
-        );
+        setSnackbarMessage("Technologie mise à jour");
       } else {
-        const result =
-          await createTechnology({
-            name,
-            category,
-            is_featured:
-              isFeatured,
-          });
+        const result = await createTechnology({
+          name,
+          category,
+          is_featured: isFeatured,
+        });
 
         if (iconFile) {
-          await uploadTechnologyIcon(
-            result.result
-              .insertId,
-            iconFile,
-          );
+          await uploadTechnologyIcon(result.result.insertId, iconFile);
         }
 
-        setSnackbarMessage(
-          "Technologie créée",
-        );
+        setSnackbarMessage("Technologie créée");
       }
 
-      setSnackbarSeverity(
-        "success",
-      );
+      setSnackbarSeverity("success");
 
       setSnackbarOpen(true);
 
       setTimeout(() => {
         onSuccess?.();
       }, 500);
-
     } catch (error) {
       console.error(error);
 
-      setSnackbarMessage(
-        "Une erreur est survenue",
-      );
+      setSnackbarMessage("Une erreur est survenue");
 
-      setSnackbarSeverity(
-        "error",
-      );
+      setSnackbarSeverity("error");
 
       setSnackbarOpen(true);
-
     } finally {
       setLoading(false);
     }
@@ -167,9 +90,7 @@ export default function TechnologyForm({
     <>
       <Stack
         component="form"
-        onSubmit={
-          handleSubmit
-        }
+        onSubmit={handleSubmit}
         sx={{
           maxWidth: 500,
         }}
@@ -179,11 +100,7 @@ export default function TechnologyForm({
           label="Nom"
           value={name}
           disabled={loading}
-          onChange={(e) =>
-            setName(
-              e.target.value,
-            )
-          }
+          onChange={(e) => setName(e.target.value)}
           sx={{
             mb: 2,
           }}
@@ -195,53 +112,31 @@ export default function TechnologyForm({
           label="Catégorie"
           value={category}
           disabled={loading}
-          onChange={(e) =>
-            setCategory(
-              e.target
-                .value as Technology["category"],
-            )
-          }
+          onChange={(e) => setCategory(e.target.value as Technology["category"])}
           sx={{
             mb: 2,
           }}
         >
-          <MenuItem value="frontend">
-            Frontend
-          </MenuItem>
+          <MenuItem value="frontend">Frontend</MenuItem>
 
-          <MenuItem value="backend">
-            Backend
-          </MenuItem>
+          <MenuItem value="backend">Backend</MenuItem>
 
-          <MenuItem value="database">
-            Database
-          </MenuItem>
+          <MenuItem value="database">Database</MenuItem>
 
-          <MenuItem value="cms">
-            CMS
-          </MenuItem>
+          <MenuItem value="cms">CMS</MenuItem>
 
-          <MenuItem value="devops">
-            DevOps
-          </MenuItem>
+          <MenuItem value="devops">DevOps</MenuItem>
 
-          <MenuItem value="design">
-            Design
-          </MenuItem>
+          <MenuItem value="design">Design</MenuItem>
 
-          <MenuItem value="management">
-            Management
-          </MenuItem>
+          <MenuItem value="management">Management</MenuItem>
         </TextField>
 
         <Stack
           sx={{
-            alignItems:
-              "center",
-            border:
-              "solid 1px silver",
-            borderRadius:
-              "10px",
+            alignItems: "center",
+            border: "solid 1px silver",
+            borderRadius: "10px",
             mb: 2,
           }}
         >
@@ -249,22 +144,16 @@ export default function TechnologyForm({
             component="img"
             src={
               iconFile
-                ? URL.createObjectURL(
-                    iconFile,
-                  )
-                : technology?.icon_url ||
-                  "/images/technology_placeholder.png"
+                ? URL.createObjectURL(iconFile)
+                : technology?.icon_url || "/images/technology_placeholder.png"
             }
             alt="Technology icon"
             sx={{
               width: 64,
               height: 64,
-              objectFit:
-                "contain",
-              border:
-                "1px solid #ddd",
-              borderRadius:
-                "8px",
+              objectFit: "contain",
+              border: "1px solid #ddd",
+              borderRadius: "8px",
               p: 1,
               mt: 2,
             }}
@@ -273,28 +162,17 @@ export default function TechnologyForm({
           <Button
             component="label"
             variant="outlined"
-            disabled={
-              loading
-            }
+            disabled={loading}
             sx={{
               my: 2,
             }}
           >
             Choisir une icône
-
             <input
               hidden
               type="file"
               accept="image/*"
-              onChange={(
-                event,
-              ) =>
-                setIconFile(
-                  event.target
-                    .files?.[0] ??
-                    null,
-                )
-              }
+              onChange={(event) => setIconFile(event.target.files?.[0] ?? null)}
             />
           </Button>
         </Stack>
@@ -302,20 +180,9 @@ export default function TechnologyForm({
         <FormControlLabel
           control={
             <Checkbox
-              checked={
-                isFeatured
-              }
-              disabled={
-                loading
-              }
-              onChange={(
-                e,
-              ) =>
-                setIsFeatured(
-                  e.target
-                    .checked,
-                )
-              }
+              checked={isFeatured}
+              disabled={loading}
+              onChange={(e) => setIsFeatured(e.target.checked)}
             />
           }
           label="Afficher dans le portfolio"
@@ -329,33 +196,18 @@ export default function TechnologyForm({
           variant="contained"
           disabled={loading}
           sx={{
-            backgroundColor:
-              "DarkGreen",
+            backgroundColor: "DarkGreen",
           }}
         >
-          {loading
-            ? "Enregistrement..."
-            : technology
-              ? "Mettre à jour"
-              : "Enregistrer"}
+          {loading ? "Enregistrement..." : technology ? "Mettre à jour" : "Enregistrer"}
         </Button>
       </Stack>
 
       <AppSnackbar
-        open={
-          snackbarOpen
-        }
-        message={
-          snackbarMessage
-        }
-        severity={
-          snackbarSeverity
-        }
-        onClose={() =>
-          setSnackbarOpen(
-            false,
-          )
-        }
+        open={snackbarOpen}
+        message={snackbarMessage}
+        severity={snackbarSeverity}
+        onClose={() => setSnackbarOpen(false)}
       />
     </>
   );

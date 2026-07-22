@@ -14,6 +14,9 @@ import DashboardPage from "@/pages/admin/DashboardPage";
 import TechnologiesPage from "@/pages/admin/technologies/technologiesPage";
 import TechnologyCreatePage from "@/pages/admin/technologies/TechnologyCreatePage";
 import TechnologyEditPage from "@/pages/admin/technologies/TechnologyEditPage";
+import ProjectsPage from "@/pages/admin/projects/ProjectsPage";
+import ProjectCreatePage from "@/pages/admin/projects/ProjectCreatePage";
+import ProjectEditPage from "@/pages/admin/projects/ProjectEditPage";
 
 export const router = createBrowserRouter([
   // Site public
@@ -65,6 +68,18 @@ export const router = createBrowserRouter([
           {
             path: "technologies/:id/edit",
             element: <TechnologyEditPage />,
+          },
+          {
+            path: "projects",
+            element: <ProjectsPage />,
+          },
+          {
+            path: "projects/new",
+            element: <ProjectCreatePage />,
+          },
+          {
+            path: "projects/:id/edit",
+            element: <ProjectEditPage />,
           },
         ],
       },
