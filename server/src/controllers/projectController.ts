@@ -20,8 +20,6 @@ import { findImagesByProjectId } from '../models/projectImageModel.js';
 
 import { deleteImageFromCloudinary } from '../services/cloudinaryService.js';
 
-import { slugify } from '../utils/slugify.js';
-
 export async function getAllPublishedProjects(_req: Request, res: Response) {
   try {
     const projects = await findAllPublishedProjects();

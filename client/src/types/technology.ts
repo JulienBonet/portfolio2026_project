@@ -1,5 +1,4 @@
 export interface Technology {
-  result: any;
   id: number;
   name: string;
   icon_url: string | null;
