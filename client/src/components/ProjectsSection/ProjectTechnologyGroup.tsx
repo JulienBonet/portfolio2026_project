@@ -31,7 +31,7 @@ export default function ProjectTechnologyGroup({
             spacing={1}
             sx={{
               alignItems: "center",
-              width: 60,
+              width: 70,
             }}
           >
             <Box

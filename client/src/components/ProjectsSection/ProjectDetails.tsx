@@ -6,13 +6,15 @@ import ProjectTechnologyGroup from "./ProjectTechnologyGroup";
 
 import ProjectVisual from "./ProjectVisual";
 
-import "../../assets/css/richText.css"
+import "../../assets/css/richText.css";
 
 type Props = {
   project: ProjectDetail;
 };
 
 export default function ProjectDetails({ project }: Props) {
+  const cms = project.technologies.filter((tech) => tech.category === "cms");
+
   const frontend = project.technologies.filter((tech) => tech.category === "frontend");
 
   const backend = project.technologies.filter((tech) => tech.category === "backend");
@@ -45,6 +47,8 @@ export default function ProjectDetails({ project }: Props) {
                 flexWrap: "wrap",
               }}
             >
+              <ProjectTechnologyGroup technologies={cms} />
+              
               <ProjectTechnologyGroup technologies={frontend} />
 
               <ProjectTechnologyGroup technologies={backend} />

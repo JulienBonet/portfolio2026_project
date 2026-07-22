@@ -28,6 +28,7 @@ export default function ContactSection() {
           borderRadius: "50px",
           py: { xs: 5, md: "5rem" },
           px: 4,
+          my: {xs: "5rem", md: 0},
           justifyContent: "center",
           width: "90%",
         }}
