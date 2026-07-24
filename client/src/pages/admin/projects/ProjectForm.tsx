@@ -37,6 +37,8 @@ export default function ProjectForm({ project, onSuccess }: Props) {
 
   const [slug, setSlug] = useState(project?.slug ?? "");
 
+  const [slugEdited, setSlugEdited] = useState(false);
+
   const [shortDescription, setShortDescription] = useState(project?.short_description ?? "");
 
   const [fullDescription, setFullDescription] = useState(project?.full_description ?? "");
@@ -66,6 +68,15 @@ export default function ProjectForm({ project, onSuccess }: Props) {
   );
 
   const [displayOrder, setDisplayOrder] = useState(project?.display_order ?? 0);
+
+  function slugify(value: string) {
+    return value
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "");
+  }
 
   useEffect(() => {
     async function loadTechnologies() {
@@ -138,9 +149,30 @@ export default function ProjectForm({ project, onSuccess }: Props) {
         maxWidth: 800,
       }}
     >
-      <TextField label="Titre" value={title} onChange={(e) => setTitle(e.target.value)} required />
+      <TextField
+        label="Titre"
+        value={title}
+        onChange={(e) => {
+          const value = e.target.value;
 
-      <TextField label="Slug" value={slug} onChange={(e) => setSlug(e.target.value)} required />
+          setTitle(value);
+
+          if (!slugEdited) {
+            setSlug(slugify(value));
+          }
+        }}
+        required
+      />
+
+      <TextField
+        label="Slug"
+        value={slug}
+        onChange={(e) => {
+          setSlug(e.target.value);
+          setSlugEdited(true);
+        }}
+        required
+      />
 
       <TextField
         label="Description courte"
