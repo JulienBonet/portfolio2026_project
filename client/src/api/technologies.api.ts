@@ -2,15 +2,31 @@ import { apiFetch } from "./apiClient";
 
 import type { Technology } from "@/types/technology";
 
+interface CreateTechnologyResponse {
+  message: string;
+  result: {
+    insertId: number;
+    affectedRows: number;
+  };
+}
+
 export async function getTechnologies() {
   return apiFetch<Technology[]>(
     "/technologies",
   );
 }
 
-export async function getTechnologiesFeatured() {
+// export async function getTechnologiesFeatured() {
+//   return apiFetch<Technology[]>(
+//     "/technologies/featured",
+//   );
+// }
+
+export async function getTechnologiesFeatured(
+  categories: string[],
+) {
   return apiFetch<Technology[]>(
-    "/technologies/featured",
+    `/technologies/featured?categories=${categories.join(",")}`,
   );
 }
 
@@ -22,20 +38,20 @@ export async function getTechnologyById(
   );
 }
 
+
 export async function createTechnology(
   technology: {
     name: string;
     category: Technology["category"];
     is_featured: boolean;
+    display_order: number;
   },
 ) {
-  return apiFetch<Technology>(
+  return apiFetch<CreateTechnologyResponse>(
     "/technologies",
     {
       method: "POST",
-      body: JSON.stringify(
-        technology,
-      ),
+      body: JSON.stringify(technology),
     },
   );
 }
@@ -46,6 +62,7 @@ export async function updateTechnology(
     name: string;
     category: Technology["category"];
     is_featured: boolean;
+    display_order: number;
   },
 ) {
   return apiFetch<Technology>(

@@ -22,7 +22,7 @@ export default function ProjectTechnologyGroup({
         sx={{
             flexWrap: "wrap",
             mt: '1.5rem',
-            gap: { xs: '1em', md: 0 },
+            gap: "1em",
         }}
       >
         {technologies.map((technology) => (

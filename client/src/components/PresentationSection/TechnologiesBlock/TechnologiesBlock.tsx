@@ -1,10 +1,6 @@
 import { useEffect, useState } from "react";
 
-import {
-  Divider,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { Divider, Stack, Typography } from "@mui/material";
 
 import { getTechnologiesFeatured } from "@/api/technologies.api";
 
@@ -14,10 +10,11 @@ import type { Technology } from "@/types/technology";
 
 import ErrorBlock from "../../common/ErrorBlock";
 
-import LoadingBlock from "../../common/LoadingBlock"
+import LoadingBlock from "../../common/LoadingBlock";
 
 export default function TechnologiesBlock() {
-  const [technologies, setTechnologies] = useState<Technology[]>([]);
+  const [frontendTechnologies, setFrontendTechnologies] = useState<Technology[]>([]);
+  const [backendTechnologies, setBackendTechnologies] = useState<Technology[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -26,16 +23,19 @@ export default function TechnologiesBlock() {
       try {
         setLoading(true);
 
-        const data = await getTechnologiesFeatured();
+        const [frontendData, backendData] = await Promise.all([
+          getTechnologiesFeatured(["cms", "frontend", "design"]),
+          getTechnologiesFeatured(["backend", "database", "devops", "management"]),
+        ]);
 
-        setTechnologies(data);
+        setFrontendTechnologies(frontendData);
+        setBackendTechnologies(backendData);
+
         setError(null);
       } catch (error) {
         console.error(error);
 
-        setError(
-          "Impossible de charger les technologies.",
-        );
+        setError("Impossible de charger les technologies.");
       } finally {
         setLoading(false);
       }
@@ -44,29 +44,17 @@ export default function TechnologiesBlock() {
     loadTechnologies();
   }, []);
 
-  if (loading) {
-  return <LoadingBlock />;
-}
+      if (loading) {
+    return <LoadingBlock />;
+  }
 
-if (error) {
-  return (
-    <ErrorBlock
-      message="Impossible de charger les technologies."
-    />
-  );
-}
-
-  const frontend = technologies.filter(
-    (tech) => tech.category === "frontend",
-  );
-
-  const backend = technologies.filter(
-    (tech) => tech.category === "backend",
-  );
-
-  const devops = technologies.filter(
-    (tech) => tech.category === "devops",
-  );
+  if (error) {
+    return (
+      <ErrorBlock
+        message="Impossible de charger les technologies."
+      />
+    );
+  }
 
   return (
     <Stack
@@ -93,7 +81,7 @@ if (error) {
         Front-end
       </Typography>
 
-      <TechnologyGroup technologies={frontend} />
+      <TechnologyGroup technologies={frontendTechnologies} />
 
       <Divider
         sx={{
@@ -118,14 +106,7 @@ if (error) {
         Back-end
       </Typography>
 
-      <Stack
-        direction="row"
-        spacing={4}
-      >
-        <TechnologyGroup technologies={backend} />
-
-        <TechnologyGroup technologies={devops} />
-      </Stack>
+      <TechnologyGroup technologies={backendTechnologies} />
 
       <Typography
         variant="h3"

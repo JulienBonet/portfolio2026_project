@@ -22,6 +22,8 @@ export default function TechnologyForm({ technology, onSuccess }: Props) {
 
   const [isFeatured, setIsFeatured] = useState(technology?.is_featured ?? false);
 
+  const [displayOrder, setDisplayOrder] = useState(technology?.display_order ?? 0);
+
   const [iconFile, setIconFile] = useState<File | null>(null);
 
   const [loading, setLoading] = useState(false);
@@ -45,6 +47,7 @@ export default function TechnologyForm({ technology, onSuccess }: Props) {
           name,
           category,
           is_featured: isFeatured,
+          display_order: displayOrder,
         });
 
         if (iconFile) {
@@ -57,6 +60,7 @@ export default function TechnologyForm({ technology, onSuccess }: Props) {
           name,
           category,
           is_featured: isFeatured,
+          display_order: displayOrder,
         });
 
         if (iconFile) {
@@ -176,6 +180,18 @@ export default function TechnologyForm({ technology, onSuccess }: Props) {
             />
           </Button>
         </Stack>
+
+        <TextField
+          fullWidth
+          type="number"
+          label="Ordre d'affichage"
+          value={displayOrder}
+          disabled={loading}
+          onChange={(e) => setDisplayOrder(Number(e.target.value))}
+          sx={{
+            mb: 2,
+          }}
+        />
 
         <FormControlLabel
           control={

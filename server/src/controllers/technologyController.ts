@@ -2,7 +2,8 @@ import { Request, Response } from "express";
 
 import {
   findAllTechnologies,
-  findAllTechnologiesFeatured,
+  // findAllTechnologiesFeatured,
+  findFeaturedTechnologiesByCategories,
   createTechnology,
   updateTechnology,
   deleteTechnology,
@@ -34,21 +35,46 @@ export async function getTechnologies(
   }
 }
 
+// export async function getTechnologiesFeatured(
+//   _req: Request,
+//   res: Response,
+// ) {
+//   try {
+//     const technologiesFeatured =
+//       await findAllTechnologiesFeatured();
+
+//     res.json(technologiesFeatured);
+
+//   } catch (error) {
+//     console.error(error);
+
+//     res.status(500).json({
+//       message: "Failed to fetch featured technologies",
+//     });
+//   }
+// }
+
 export async function getTechnologiesFeatured(
-  _req: Request,
+  req: Request,
   res: Response,
 ) {
   try {
-    const technologiesFeatured =
-      await findAllTechnologiesFeatured();
+    const categories =
+      (req.query.categories as string)
+        ?.split(",");
 
-    res.json(technologiesFeatured);
+    const technologies =
+      await findFeaturedTechnologiesByCategories(
+        categories,
+      );
+
+    res.json(technologies);
 
   } catch (error) {
     console.error(error);
 
     res.status(500).json({
-      message: "Failed to fetch featured technologies",
+      message: "Failed to fetch technologies",
     });
   }
 }
@@ -90,6 +116,7 @@ export async function createTechnologyController(
       icon_url,
       category,
       is_featured,
+      display_order,
     } = req.body;
 
     if (!name || !category) {
@@ -104,6 +131,7 @@ export async function createTechnologyController(
         icon_url ?? null,
         category as TechnologyCategory,
         Boolean(is_featured),
+        Number(display_order),
       );
 
     res.status(201).json({
@@ -140,6 +168,7 @@ export async function updateTechnologyController(
       name,
       category,
       is_featured,
+      display_order,
     } = req.body;
 
     await updateTechnology(
@@ -148,6 +177,7 @@ export async function updateTechnologyController(
       technology.icon_url,
       category as TechnologyCategory,
       Boolean(is_featured),
+      Number(display_order),
     );
 
     res.json({
@@ -253,6 +283,7 @@ export async function uploadTechnologyIconController(
       iconUrl,
       technology.category,
       technology.is_featured,
+      technology.display_order,
     );
 
     res.status(201).json({

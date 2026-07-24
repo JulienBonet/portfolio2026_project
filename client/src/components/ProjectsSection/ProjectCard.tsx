@@ -73,6 +73,8 @@ export default function ProjectCard({ project }: Props) {
   const [hovered, setHovered] = useState(false);
   const [projectDetail, setProjectDetail] = useState<ProjectDetail | null>(null);
 
+  console.info(projectDetail)
+
   useEffect(() => {
     async function loadProjectDetail() {
       if (!expanded || projectDetail) {

@@ -13,20 +13,6 @@ type Props = {
 };
 
 export default function ProjectDetails({ project }: Props) {
-  const cms = project.technologies.filter((tech) => tech.category === "cms");
-
-  const frontend = project.technologies.filter((tech) => tech.category === "frontend");
-
-  const backend = project.technologies.filter((tech) => tech.category === "backend");
-
-  const database = project.technologies.filter((tech) => tech.category === "database");
-
-  const devops = project.technologies.filter((tech) => tech.category === "devops");
-
-  const design = project.technologies.filter((tech) => tech.category === "design");
-
-  const management = project.technologies.filter((tech) => tech.category === "management");
-
   return (
     <Grid container spacing={4}>
       <Grid size={{ xs: 12, md: 6 }}>
@@ -47,19 +33,7 @@ export default function ProjectDetails({ project }: Props) {
                 flexWrap: "wrap",
               }}
             >
-              <ProjectTechnologyGroup technologies={cms} />
-              
-              <ProjectTechnologyGroup technologies={frontend} />
-
-              <ProjectTechnologyGroup technologies={backend} />
-
-              <ProjectTechnologyGroup technologies={database} />
-
-              <ProjectTechnologyGroup technologies={devops} />
-
-              <ProjectTechnologyGroup technologies={design} />
-
-              <ProjectTechnologyGroup technologies={management} />
+              <ProjectTechnologyGroup technologies={project.technologies} />
             </Stack>
           </Box>
 

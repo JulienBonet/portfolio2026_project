@@ -11,4 +11,5 @@ export interface Technology {
     | "management"
     | "devops";
   is_featured: boolean;
+  display_order: number;
 }
