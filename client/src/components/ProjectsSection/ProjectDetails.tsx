@@ -1,4 +1,6 @@
-import { Box, Grid, Stack, Typography } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
+
+import Divider from "@mui/material/Divider";
 
 import type { ProjectDetail } from "@/types/project";
 
@@ -14,67 +16,52 @@ type Props = {
 
 export default function ProjectDetails({ project }: Props) {
   return (
-    <Grid container spacing={4}>
-      <Grid size={{ xs: 12, md: 6 }}>
-        <Stack spacing={3}>
-          <Box>
-            <Typography
-              sx={{
-                fontSize: { xs: "1.5em", md: "2em" },
-                fontWeight: 500,
-              }}
-            >
-              Stack Technique
-            </Typography>
+    <Stack spacing={3}>
+      <Stack spacing={3}>
+        <Box>
+          <Typography
+            sx={{
+              fontSize: { xs: "1.5em", md: "2em" },
+              fontWeight: 500,
+            }}
+          >
+            Stack Technique
+          </Typography>
 
-            <Stack
-              sx={{
-                flexDirection: "row",
-                flexWrap: "wrap",
-              }}
-            >
-              <ProjectTechnologyGroup technologies={project.technologies} />
-            </Stack>
-          </Box>
+          <Stack
+            sx={{
+              flexDirection: "row",
+              flexWrap: "wrap",
+            }}
+          >
+            <ProjectTechnologyGroup technologies={project.technologies} />
+          </Stack>
+        </Box>
+        <Box>
+          <Typography
+            sx={{
+              mb: 2,
+              fontSize: { xs: "1.5em", md: "2em", lg:"2.5em" },
+              fontWeight: 500,
+            }}
+          >
+            Infos Projet
+          </Typography>
 
-          <Box>
-            <Typography
-              sx={{
-                mb: 2,
-                fontSize: { xs: "1.5em", md: "2em" },
-                fontWeight: 500,
-              }}
-            >
-              Infos Projet
-            </Typography>
-
-            <Box
-              className="rich-text-content"
-              dangerouslySetInnerHTML={{
-                __html: project.full_description,
-              }}
-            />
-          </Box>
-        </Stack>
-      </Grid>
-
-      <Grid
-        size={{ xs: 12, md: 6 }}
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Box
-          sx={{
-            width: { xs: "100%", md: "85%" },
-          }}
-        >
+          <Box
+            className="rich-text-content"
+            dangerouslySetInnerHTML={{
+              __html: project.full_description,
+            }}
+          />
+        </Box>
+      </Stack>
+      <Divider sx={{ width: "100%" }} />
+      <Stack spacing={3} sx={{ width: "100%", alignItems: "center" }}>
+        <Box sx={{ width: { xs: "100%", md: "60%"} }}>
           <ProjectVisual project={project} />
         </Box>
-      </Grid>
-    </Grid>
+      </Stack>
+    </Stack>
   );
 }

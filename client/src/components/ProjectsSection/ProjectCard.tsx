@@ -73,7 +73,7 @@ export default function ProjectCard({ project }: Props) {
   const [hovered, setHovered] = useState(false);
   const [projectDetail, setProjectDetail] = useState<ProjectDetail | null>(null);
 
-  console.info(projectDetail)
+  console.info(projectDetail);
 
   useEffect(() => {
     async function loadProjectDetail() {
@@ -93,7 +93,7 @@ export default function ProjectCard({ project }: Props) {
   }, [expanded, project.id, projectDetail]);
 
   return (
-    <Stack sx={{ flexDirection: "column" }}>
+<Stack sx={{ flexDirection: "column" }}>
       <Stack
         spacing={{ xs: 3, md: 0 }}
         sx={{
@@ -131,7 +131,7 @@ export default function ProjectCard({ project }: Props) {
             variant="h3"
             sx={{
               fontWeight: 500,
-              fontSize: { xs: "2em", md: "3em" },
+              fontSize: { xs: "2em",  lg: "3em" },
               textAlign: "center",
             }}
           >
