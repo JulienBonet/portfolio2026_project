@@ -43,7 +43,7 @@ export async function findAllPublishedProjects(): Promise<Project[]> {
         updated_at
       FROM projects
       WHERE status = 'published'
-      ORDER BY display_order ASC
+      ORDER BY display_order DESC
     `,
   );
 

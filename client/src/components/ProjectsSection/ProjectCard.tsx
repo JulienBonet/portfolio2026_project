@@ -93,7 +93,7 @@ export default function ProjectCard({ project }: Props) {
   }, [expanded, project.id, projectDetail]);
 
   return (
-<Stack sx={{ flexDirection: "column" }}>
+    <Stack sx={{ flexDirection: "column" }}>
       <Stack
         spacing={{ xs: 3, md: 0 }}
         sx={{
@@ -111,13 +111,15 @@ export default function ProjectCard({ project }: Props) {
         <Stack sx={{ width: { xs: "95%", md: "20%" }, justifyContent: "center" }}>
           <Box
             component="img"
-            src={project.cover_image_url ?? ""}
+            src={
+              project.cover_image_url ? project.cover_image_url : "/images/project_placeholder.jpg"
+            }
             alt={project.title}
             sx={{
               width: "100%",
               objectFit: "cover",
               border: "solid 1px black",
-              borderRadius: { xs: "0", md: "10px" },
+              borderRadius: '10px',
             }}
           />
         </Stack>
@@ -131,7 +133,7 @@ export default function ProjectCard({ project }: Props) {
             variant="h3"
             sx={{
               fontWeight: 500,
-              fontSize: { xs: "2em",  lg: "3em" },
+              fontSize: { xs: "2em", lg: "3em" },
               textAlign: "center",
             }}
           >
@@ -203,7 +205,7 @@ export default function ProjectCard({ project }: Props) {
             rel="noreferrer"
             sx={{
               display: "inline-block",
-              width: {xs: "30%", sm: "20%", md: "50%"},
+              width: { xs: "30%", sm: "20%", md: "50%" },
             }}
           >
             <Box
