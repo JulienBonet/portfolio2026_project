@@ -14,7 +14,6 @@ import { deleteImageFromCloudinary, uploadImageBuffer } from '../services/cloudi
 import { findProjectById } from '../models/projectModel.js';
 
 
-
 export async function getProjectImages(req: Request, res: Response) {
   try {
     const projectId = Number(req.params.id);

@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 
 import {
   findAllTechnologies,
-  // findAllTechnologiesFeatured,
   findFeaturedTechnologiesByCategories,
   createTechnology,
   updateTechnology,
@@ -34,25 +33,6 @@ export async function getTechnologies(
     });
   }
 }
-
-// export async function getTechnologiesFeatured(
-//   _req: Request,
-//   res: Response,
-// ) {
-//   try {
-//     const technologiesFeatured =
-//       await findAllTechnologiesFeatured();
-
-//     res.json(technologiesFeatured);
-
-//   } catch (error) {
-//     console.error(error);
-
-//     res.status(500).json({
-//       message: "Failed to fetch featured technologies",
-//     });
-//   }
-// }
 
 export async function getTechnologiesFeatured(
   req: Request,

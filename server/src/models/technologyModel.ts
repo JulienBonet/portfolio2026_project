@@ -29,24 +29,6 @@ export async function findAllTechnologies(): Promise<Technology[]> {
   return rows as Technology[];
 }
 
-// export async function findAllTechnologiesFeatured(): Promise<Technology[]> {
-//   const [rows] = await db.query(
-//     `
-//       SELECT
-//         id,
-//         name,
-//         icon_url,
-//         category,
-//         is_featured
-//       FROM technologies
-//       WHERE is_featured = true
-//       ORDER BY category, name
-//     `,
-//   );
-
-//   return rows as Technology[];
-// }
-
 export async function findFeaturedTechnologiesByCategories(
   categories: string[],
 ): Promise<Technology[]> {
