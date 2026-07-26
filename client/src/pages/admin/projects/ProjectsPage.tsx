@@ -42,8 +42,6 @@ export default function ProjectsPage() {
     [],
   );
 
-  console.log("projects", projects)
-
   const [
     loading,
     setLoading,

@@ -19,9 +19,28 @@ interface Props {
 }
 
 export default function RichTextEditor({ value, onChange }: Props) {
+  // const editor = useEditor({
+  //   extensions: [
+  //     StarterKit,
+
+  //     Link.configure({
+  //       openOnClick: false,
+  //       autolink: false,
+  //     }),
+  //   ],
+
+  //   content: value,
+
+  //   onUpdate({ editor }) {
+  //     onChange(editor.getHTML());
+  //   },
+  // });
+
   const editor = useEditor({
     extensions: [
-      StarterKit,
+      StarterKit.configure({
+        link: false,
+      }),
 
       Link.configure({
         openOnClick: false,

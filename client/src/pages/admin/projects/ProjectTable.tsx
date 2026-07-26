@@ -11,6 +11,7 @@ import {
   TableHead,
   TableRow,
   TableSortLabel,
+  TablePagination,
 } from "@mui/material";
 
 import EditIcon from "@mui/icons-material/Edit";
@@ -32,6 +33,10 @@ export default function ProjectTable({ projects, onEdit, onDelete }: Props) {
   const [order, setOrder] = useState<Order>("asc");
 
   const [orderBy, setOrderBy] = useState<SortField>("title");
+
+  const [page, setPage] = useState(0);
+
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   function handleSort(property: SortField) {
     const isAsc = orderBy === property && order === "asc";
@@ -55,116 +60,141 @@ export default function ProjectTable({ projects, onEdit, onDelete }: Props) {
       : String(bValue).localeCompare(String(aValue));
   });
 
+  const paginatedProjects = sortedProjects.slice(
+    page * rowsPerPage,
+    page * rowsPerPage + rowsPerPage,
+  );
+
   return (
     <Paper>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>
-              <TableSortLabel
-                active={orderBy === "title"}
-                direction={orderBy === "title" ? order : "asc"}
-                onClick={() => handleSort("title")}
-              >
-                Titre
-              </TableSortLabel>
-            </TableCell>
-
-            <TableCell>
-              <TableSortLabel
-                active={orderBy === "display_order"}
-                direction={orderBy === "display_order" ? order : "asc"}
-                onClick={() => handleSort("display_order")}
-              >
-                Ordre
-              </TableSortLabel>
-            </TableCell>
-
-            <TableCell>
-              <TableSortLabel
-                active={orderBy === "project_type"}
-                direction={orderBy === "project_type" ? order : "asc"}
-                onClick={() => handleSort("project_type")}
-              >
-                Type
-              </TableSortLabel>
-            </TableCell>
-
-            <TableCell>Cover</TableCell>
-
-            <TableCell>
-              <TableSortLabel
-                active={orderBy === "is_deployed"}
-                direction={orderBy === "is_deployed" ? order : "asc"}
-                onClick={() => handleSort("is_deployed")}
-              >
-                Déployé
-              </TableSortLabel>
-            </TableCell>
-
-            <TableCell>
-              <TableSortLabel
-                active={orderBy === "status"}
-                direction={orderBy === "status" ? order : "asc"}
-                onClick={() => handleSort("status")}
-              >
-                Statut
-              </TableSortLabel>
-            </TableCell>
-
-            <TableCell align="right">Actions</TableCell>
-          </TableRow>
-        </TableHead>
-
-        <TableBody>
-          {sortedProjects.map((project) => (
-            <TableRow key={project.id}>
-              <TableCell>{project.title}</TableCell>
-
-              <TableCell>{project.display_order}</TableCell>
-
-              <TableCell>{project.project_type}</TableCell>
+      <Box
+        sx={{
+          maxHeight: "70vh",
+          overflow: "auto",
+        }}
+      >
+        <Table stickyHeader>
+          <TableHead>
+            <TableRow>
+              <TableCell>
+                <TableSortLabel
+                  active={orderBy === "title"}
+                  direction={orderBy === "title" ? order : "asc"}
+                  onClick={() => handleSort("title")}
+                >
+                  Titre
+                </TableSortLabel>
+              </TableCell>
 
               <TableCell>
-                <Box
-                  component="img"
-                  src={project.cover_image_url ?? "/images/project_placeholder.jpg"}
-                  alt={project.title}
-                  onError={(event) => {
-                    event.currentTarget.src = "/images/project_placeholder.jpg";
-                  }}
-                  sx={{
-                    width: 60,
-                    height: 40,
-                    objectFit: "cover",
-                    borderRadius: 1,
-                  }}
-                />
+                <TableSortLabel
+                  active={orderBy === "display_order"}
+                  direction={orderBy === "display_order" ? order : "asc"}
+                  onClick={() => handleSort("display_order")}
+                >
+                  Ordre
+                </TableSortLabel>
               </TableCell>
-
-              <TableCell>{project.is_deployed ? "Oui" : "Non"}</TableCell>
 
               <TableCell>
-                <Chip
-                  size="small"
-                  color={project.status === "published" ? "success" : "default"}
-                  label={project.status === "published" ? "Publié" : "Brouillon"}
-                />
+                <TableSortLabel
+                  active={orderBy === "project_type"}
+                  direction={orderBy === "project_type" ? order : "asc"}
+                  onClick={() => handleSort("project_type")}
+                >
+                  Type
+                </TableSortLabel>
               </TableCell>
 
-              <TableCell align="right">
-                <IconButton onClick={() => onEdit(project.id)}>
-                  <EditIcon />
-                </IconButton>
+              <TableCell>Cover</TableCell>
 
-                <IconButton color="error" onClick={() => onDelete(project)}>
-                  <DeleteIcon />
-                </IconButton>
+              <TableCell>
+                <TableSortLabel
+                  active={orderBy === "is_deployed"}
+                  direction={orderBy === "is_deployed" ? order : "asc"}
+                  onClick={() => handleSort("is_deployed")}
+                >
+                  Déployé
+                </TableSortLabel>
               </TableCell>
+
+              <TableCell>
+                <TableSortLabel
+                  active={orderBy === "status"}
+                  direction={orderBy === "status" ? order : "asc"}
+                  onClick={() => handleSort("status")}
+                >
+                  Statut
+                </TableSortLabel>
+              </TableCell>
+
+              <TableCell align="right">Actions</TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHead>
+
+          <TableBody>
+            {paginatedProjects.map((project) => (
+              <TableRow key={project.id}>
+                <TableCell>{project.title}</TableCell>
+
+                <TableCell>{project.display_order}</TableCell>
+
+                <TableCell>{project.project_type}</TableCell>
+
+                <TableCell>
+                  <Box
+                    component="img"
+                    src={project.cover_image_url ?? "/images/project_placeholder.jpg"}
+                    alt={project.title}
+                    onError={(event) => {
+                      event.currentTarget.src = "/images/project_placeholder.jpg";
+                    }}
+                    sx={{
+                      width: 60,
+                      height: 40,
+                      objectFit: "cover",
+                      borderRadius: 1,
+                    }}
+                  />
+                </TableCell>
+
+                <TableCell>{project.is_deployed ? "Oui" : "Non"}</TableCell>
+
+                <TableCell>
+                  <Chip
+                    size="small"
+                    color={project.status === "published" ? "success" : "default"}
+                    label={project.status === "published" ? "Publié" : "Brouillon"}
+                  />
+                </TableCell>
+
+                <TableCell align="right">
+                  <IconButton onClick={() => onEdit(project.id)}>
+                    <EditIcon />
+                  </IconButton>
+
+                  <IconButton color="error" onClick={() => onDelete(project)}>
+                    <DeleteIcon />
+                  </IconButton>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </Box>
+
+      <TablePagination
+        component="div"
+        count={projects.length}
+        page={page}
+        rowsPerPage={rowsPerPage}
+        rowsPerPageOptions={[5, 10, 25]}
+        onPageChange={(_event, newPage) => setPage(newPage)}
+        onRowsPerPageChange={(event) => {
+          setRowsPerPage(Number(event.target.value));
+          setPage(0);
+        }}
+      />
     </Paper>
   );
 }

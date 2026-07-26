@@ -63,91 +63,98 @@ export default function TechnologyTable({ technologies, onEdit, onDelete }: Prop
 
   return (
     <Paper>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>
-              <TableSortLabel
-                active={orderBy === "name"}
-                direction={orderBy === "name" ? order : "asc"}
-                onClick={() => handleSort("name")}
-              >
-                Nom
-              </TableSortLabel>
-            </TableCell>
-
-            <TableCell>
-              <TableSortLabel
-                active={orderBy === "category"}
-                direction={orderBy === "category" ? order : "asc"}
-                onClick={() => handleSort("category")}
-              >
-                Catégorie
-              </TableSortLabel>
-            </TableCell>
-
-            <TableCell>
-              <TableSortLabel
-                active={orderBy === "is_featured"}
-                direction={orderBy === "is_featured" ? order : "asc"}
-                onClick={() => handleSort("is_featured")}
-              >
-                Featured
-              </TableSortLabel>
-            </TableCell>
-
-            <TableCell>Icône</TableCell>
-
-            <TableCell>Actions</TableCell>
-          </TableRow>
-        </TableHead>
-
-        <TableBody>
-          {paginatedTechnologies.map((technology) => (
-            <TableRow key={technology.id}>
-              <TableCell>{technology.name}</TableCell>
-
-              <TableCell>{technology.category}</TableCell>
-
-              <TableCell>{technology.is_featured ? "Oui" : "Non"}</TableCell>
-
+      <Box
+        sx={{
+          maxHeight: "70vh",
+          overflow: "auto",
+        }}
+      >
+        <Table stickyHeader>
+          <TableHead>
+            <TableRow>
               <TableCell>
-                {technology.icon_url ? (
-                  <Box
-                    component="img"
-                    src={technology.icon_url}
-                    alt={technology.name}
-                    sx={{
-                      width: 32,
-                      height: 32,
-                      objectFit: "contain",
-                    }}
-                  />
-                ) : (
-                  "-"
-                )}
+                <TableSortLabel
+                  active={orderBy === "name"}
+                  direction={orderBy === "name" ? order : "asc"}
+                  onClick={() => handleSort("name")}
+                >
+                  Nom
+                </TableSortLabel>
               </TableCell>
 
               <TableCell>
-                <Stack direction="row" spacing={1}>
-                  <Button size="small" variant="outlined" onClick={() => onEdit(technology.id)}>
-                    Modifier
-                  </Button>
-
-                  <Button
-                    size="small"
-                    color="error"
-                    variant="outlined"
-                    onClick={() => onDelete(technology)}
-                  >
-                    Supprimer
-                  </Button>
-                </Stack>
+                <TableSortLabel
+                  active={orderBy === "category"}
+                  direction={orderBy === "category" ? order : "asc"}
+                  onClick={() => handleSort("category")}
+                >
+                  Catégorie
+                </TableSortLabel>
               </TableCell>
+
+              <TableCell>
+                <TableSortLabel
+                  active={orderBy === "is_featured"}
+                  direction={orderBy === "is_featured" ? order : "asc"}
+                  onClick={() => handleSort("is_featured")}
+                >
+                  Featured
+                </TableSortLabel>
+              </TableCell>
+
+              <TableCell>Icône</TableCell>
+
+              <TableCell>Actions</TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHead>
+
+          <TableBody>
+            {paginatedTechnologies.map((technology) => (
+              <TableRow key={technology.id}>
+                <TableCell>{technology.name}</TableCell>
+
+                <TableCell>{technology.category}</TableCell>
+
+                <TableCell>{technology.is_featured ? "Oui" : "Non"}</TableCell>
+
+                <TableCell>
+                  {technology.icon_url ? (
+                    <Box
+                      component="img"
+                      src={technology.icon_url}
+                      alt={technology.name}
+                      sx={{
+                        width: 32,
+                        height: 32,
+                        objectFit: "contain",
+                      }}
+                    />
+                  ) : (
+                    "-"
+                  )}
+                </TableCell>
+
+                <TableCell>
+                  <Stack direction="row" spacing={1}>
+                    <Button size="small" variant="outlined" onClick={() => onEdit(technology.id)}>
+                      Modifier
+                    </Button>
+
+                    <Button
+                      size="small"
+                      color="error"
+                      variant="outlined"
+                      onClick={() => onDelete(technology)}
+                    >
+                      Supprimer
+                    </Button>
+                  </Stack>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </Box>
 
       <TablePagination
         component="div"

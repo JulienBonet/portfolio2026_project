@@ -71,6 +71,7 @@ export default function LoginPage() {
           <TextField
             label="Login"
             value={loginValue}
+            autoComplete="username"
             onChange={(e) =>
               setLoginValue(
                 e.target.value,
@@ -81,6 +82,7 @@ export default function LoginPage() {
           <TextField
             label="Mot de passe"
             type="password"
+            autoComplete="current-password"
             value={password}
             onChange={(e) =>
               setPassword(

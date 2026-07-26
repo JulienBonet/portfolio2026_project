@@ -30,7 +30,7 @@ export default function AdminSidebar() {
     <Box
       sx={{
         width: 260,
-        minHeight: "100vh",
+        Height: "100vh",
         borderRight: "1px solid",
         borderColor: "divider",
         p: 2,
