@@ -16,12 +16,6 @@ export async function getTechnologies() {
   );
 }
 
-// export async function getTechnologiesFeatured() {
-//   return apiFetch<Technology[]>(
-//     "/technologies/featured",
-//   );
-// }
-
 export async function getTechnologiesFeatured(
   categories: string[],
 ) {
