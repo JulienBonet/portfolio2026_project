@@ -23,3 +23,5 @@ coverage
 
 server/hashPassword.js
 
+client/FRONTEND_DEV.md
+
