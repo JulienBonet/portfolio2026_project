@@ -12,5 +12,34 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
 
+    restart: unless-stopped
+
+  server:
+    build:
+      context: ./server
+
+    env_file:
+      - ./server/.env.docker
+
+    ports:
+      - "3010:3010"
+
+    depends_on:
+      - mysql
+
+    restart: unless-stopped
+
+  client:
+    build:
+      context: ./client
+
+    ports:
+      - "8081:80"
+
+    depends_on:
+      - server
+
+    restart: unless-stopped
+
 volumes:
   mysql_data:

@@ -8,7 +8,6 @@ export async function authenticateUser(
   password: string,
 ) {
   const user = await findUserByLogin(login);
-  console.log(user);
 
   if (!user) {
     return null;

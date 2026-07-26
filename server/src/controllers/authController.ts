@@ -4,8 +4,6 @@ import { authenticateUser } from '../services/authService.js';
 
 export async function loginController(req: Request, res: Response) {
   try {
-    console.log(req.headers);
-    console.log(req.body);
     const { login, password } = req.body;
 
     if (!login || !password) {
