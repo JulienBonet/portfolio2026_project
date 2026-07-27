@@ -21,3 +21,7 @@
 ### > project infos
 
 Portfolio 2026 is a React-based frontend application showcasing my web development projects, technical skills, and profile. It includes a public interface for visitors and an admin dashboard to manage portfolio content.
+
+### > samples
+
+<img src="https://julienbonet.fr/julius_git/portofolio_2026_01.png" alt="portfolio illustration"/>
