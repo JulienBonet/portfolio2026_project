@@ -1,7 +1,7 @@
 .rich-text-content {
-  font-size: large;
+  font-size: small;
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-  font-size: medium;
+  line-height: 1.5;
 }
 
 .rich-text-content strong {
