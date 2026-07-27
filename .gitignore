@@ -25,3 +25,4 @@ server/hashPassword.js
 
 client/FRONTEND_DEV.md
 
+docker-compose.prod.yml
