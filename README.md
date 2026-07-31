@@ -24,4 +24,4 @@ Portfolio 2026 is a React-based frontend application showcasing my web developme
 
 ### > samples
 
-<img src="https://julienbonet.fr/julius_git/portofolio_2026_01.png" alt="portfolio illustration"/>
+<img src="https://res.cloudinary.com/upynf7jw/image/upload/v1785534544/portofolio_2026_01_kw8myh.png" alt="portfolio illustration"/>
