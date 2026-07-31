@@ -1,54 +1,27 @@
-import {
-  Card,
-  CardMedia,
-  Chip,
-  IconButton,
-} from "@mui/material";
+import { Card, CardMedia, Chip, IconButton } from "@mui/material";
 
 import DeleteIcon from "@mui/icons-material/Delete";
 
-import {
-  useSortable,
-} from "@dnd-kit/sortable";
+import { useSortable } from "@dnd-kit/sortable";
 
-import {
-  CSS,
-} from "@dnd-kit/utilities";
+import { CSS } from "@dnd-kit/utilities";
 
-import type {
-  ProjectImage,
-} from "@/types/project";
-
+import type { ProjectImage } from "@/types/project";
 
 interface Props {
   image: ProjectImage;
-  onDelete: (
-    imageId: number,
-  ) => void;
+  onDelete: (imageId: number) => void;
 
   disabled?: boolean;
 }
 
-export default function SortableProjectImage({
-  image,
-  onDelete,
-  disabled
-}: Props) {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-  } = useSortable({
+export default function SortableProjectImage({ image, onDelete, disabled }: Props) {
+  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
     id: image.id,
   });
 
   const style = {
-    transform:
-      CSS.Transform.toString(
-        transform,
-      ),
+    transform: CSS.Transform.toString(transform),
     transition,
     cursor: "grab",
   };
@@ -74,23 +47,26 @@ export default function SortableProjectImage({
           top: 8,
           left: 8,
           zIndex: 2,
-          backgroundColor: 'white',
+          backgroundColor: "white",
         }}
       />
 
       <IconButton
         size="small"
         disabled={disabled}
-        onClick={() =>
-          onDelete(image.id)
-        }
+        onPointerDown={(event) => {
+          event.stopPropagation();
+        }}
+        onClick={(event) => {
+          event.stopPropagation();
+          onDelete(image.id);
+        }}
         sx={{
           position: "absolute",
           top: 8,
           right: 8,
           zIndex: 2,
-          bgcolor:
-            "background.paper",
+          bgcolor: "background.paper",
         }}
       >
         <DeleteIcon />
