@@ -56,6 +56,8 @@ export default function TechnologiesBlock() {
     );
   }
 
+  console.log('frontendTechnologies', frontendTechnologies)
+
   return (
     <Stack
       spacing={3}

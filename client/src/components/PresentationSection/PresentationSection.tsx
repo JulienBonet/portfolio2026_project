@@ -46,12 +46,14 @@ export default function PresentationSection() {
             }}
           >
             <Stack
+              component="h1"
               spacing={2}
               sx={{
                 alignItems: "center",
               }}
             >
               <Typography
+                component="span"
                 variant="h1"
                 sx={{
                   fontSize: {
@@ -66,6 +68,7 @@ export default function PresentationSection() {
               </Typography>
 
               <Typography
+                component="span"
                 variant="h2"
                 sx={{
                   fontSize: {

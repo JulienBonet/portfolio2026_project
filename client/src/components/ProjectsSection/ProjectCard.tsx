@@ -90,6 +90,8 @@ export default function ProjectCard({ project }: Props) {
     loadProjectDetail();
   }, [expanded, project.id, projectDetail]);
 
+
+  console.info('projectDetail', projectDetail)
   return (
     <Stack sx={{ flexDirection: "column" }}>
       <Stack

@@ -50,13 +50,13 @@ export async function findFeaturedTechnologiesByCategories(
         AND category IN (${placeholders})
       ORDER BY
         CASE category
-          WHEN 'cms' THEN 1
-          WHEN 'frontend' THEN 2
-          WHEN 'design' THEN 3
-          WHEN 'backend' THEN 4
-          WHEN 'database' THEN 5
-          WHEN 'devops' THEN 6
-          WHEN 'management' THEN 7
+          WHEN 'frontend' THEN 1
+          WHEN 'design' THEN 2
+          WHEN 'backend' THEN 3
+          WHEN 'database' THEN 4
+          WHEN 'devops' THEN 5
+          WHEN 'management' THEN 6
+          WHEN 'cms' THEN 7
           ELSE 99
         END,
         display_order ASC,

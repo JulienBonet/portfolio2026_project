@@ -12,7 +12,7 @@ const links = [
     href: "#presentation",
   },
   {
-    label: "PROJECTS",
+    label: "PROJETS",
     href: "#projects",
   },
   {

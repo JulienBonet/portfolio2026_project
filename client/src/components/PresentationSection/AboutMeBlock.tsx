@@ -25,7 +25,7 @@ export default function AboutMeBlock() {
       </Typography>
       <Typography sx={{ mt: 2, fontSize: "0.9em", }}>
         Après avoir travaillé dans les domaines de la photographie, de la vidéo, de la communication
-        digitale pour le monde du spectacle, du cinéma, de l'hôtelerie, de la haute administration
+        digitale pour le monde du spectacle, du cinéma, de l'hôtellerie, de la haute administration
         et du fundraising, j'officie également dans le développement web.
       </Typography>
       <Typography

@@ -22,7 +22,7 @@ export default function DesktopNavigation() {
       </Button>
 
       <Button href="#projects" sx={navButtonSx}>
-        PROJECTS
+        PROJETS
       </Button>
 
       <Button href="#contact" sx={navButtonSx}>
